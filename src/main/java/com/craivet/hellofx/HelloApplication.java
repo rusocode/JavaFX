@@ -5,6 +5,8 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 /**
@@ -59,6 +61,31 @@ import javafx.stage.Stage;
  * <p>
  * JavaFX se posiciona como una solucion moderna y flexible para el desarrollo de aplicaciones graficas en Java, ofreciendo
  * capacidades avanzadas de interfaz de usuario y multimedia.
+ * <h4>Capas del JavaFX</h4>
+ * <p>
+ * JavaFX utiliza una estructura jerarquica para organizar los elementos de la interfaz de usuario. En el nivel superior se
+ * encuentra el {@code Stage}, que es similar a un JFrame en Swing y representa la ventana principal de la aplicacion. Dentro del
+ * Stage se aloja la {@code Scene}, que actua como una superficie de dibujo donde se colocan todos los elementos visuales,
+ * comparable a un JPanel pero con capacidades mas avanzadas. La Scene contiene el <b>Scene Graph</b>, que es un arbol jerarquico
+ * de nodos que representa la estructura de la interfaz de usuario. Este arbol comienza con un <i>root node</i>, que suele ser un
+ * contenedor como Group o Pane. A partir de este nodo raiz, se ramifican los <i>branch nodes</i>, que pueden contener otros nodos
+ * y ayudan a organizar la estructura, como VBox, HBox o GridPane. Finalmente, en las puntas del arbol se encuentran los <i>leaf
+ * nodes</i>, que representan los componentes finales de la interfaz como botones, etiquetas o campos de texto. Esta estructura
+ * permite una organizacion eficiente y flexible de los elementos de la interfaz, facilitando su manipulacion, estilizado y la
+ * gestion de eventos en aplicaciones JavaFX.
+ * <pre>{@code
+ * Stage
+ * └── Scene
+ *     └── Root Node (ej. Pane)
+ *         ├── Branch Node (ej. HBox)
+ *         │   ├── Leaf Node (ej. Button)
+ *         │   └── Leaf Node (ej. TextField)
+ *         └── Branch Node (ej. GridPane)
+ *             ├── Leaf Node (ej. Label)
+ *             └── Leaf Node (ej. ImageView)
+ * }</pre>
+ * <p>
+ * Puedes pensar esto como un sandwich, en donde Stage es el pan, Scene la carne y todos los nodos son aderezos y condimentos.
  * <h3>FXML</h3>
  * <p>
  * El archivo FXML en JavaFX es un formato de archivo basado en XML utilizado para definir la estructura y el diseño de las
@@ -105,17 +132,29 @@ import javafx.stage.Stage;
 
 public class HelloApplication extends Application {
 
+    public static final int WIDTH = 600;
+    public static final int HEIGHT = 400;
+
+    public static void main(String[] args) {
+        launch(); // Llama al metodo start
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        /* Como primer parametro se pasa un root node (piense en el como un layout manager). Ellos dictaran como los nodos
+         * (componentes), ya sean imagenes, cuadros de textos, se organizaran dentro de una Scene. */
+        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
         stage.setTitle("Title");
+        stage.getIcons().add(new Image("logo.png"));
+        // stage.setWidth(WIDTH);
+        // stage.setHeight(HEIGHT);
+        // stage.setResizable(false);
+        // stage.setFullScreen(true);
+        // stage.setFullScreenExitHint("YOU CAN'T ESCAPE unless you press Q");
+        // stage.setFullScreenExitKeyCombination(KeyCombination.valueOf("q"));
         stage.setScene(scene);
-        stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
+        stage.show(); // Siempre debe ir al final
     }
 
 }

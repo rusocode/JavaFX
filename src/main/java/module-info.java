@@ -16,6 +16,7 @@ module com.craivet.hellofx { // Define el nombre del modulo
     // Indican que el modulo depende de estos modulos de JavaFX
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
     // Permite que JavaFX acceda a las clases en ese paquete para la carga de FXML
     opens com.craivet.hellofx to javafx.fxml;
     // Hace que las clases publicas en ese paquete sean accesibles desde fuera del modulo
