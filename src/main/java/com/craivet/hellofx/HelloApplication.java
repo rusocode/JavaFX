@@ -4,9 +4,18 @@ import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 /**
@@ -133,7 +142,7 @@ import javafx.stage.Stage;
 public class HelloApplication extends Application {
 
     public static final int WIDTH = 600;
-    public static final int HEIGHT = 400;
+    public static final int HEIGHT = 600;
 
     public static void main(String[] args) {
         launch(); // Llama al metodo start
@@ -141,10 +150,11 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        Group root = new Group();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         /* Como primer parametro se pasa un root node (piense en el como un layout manager). Ellos dictaran como los nodos
          * (componentes), ya sean imagenes, cuadros de textos, se organizaran dentro de una Scene. */
-        Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setTitle("Title");
         stage.getIcons().add(new Image("logo.png"));
         // stage.setWidth(WIDTH);
@@ -153,6 +163,59 @@ public class HelloApplication extends Application {
         // stage.setFullScreen(true);
         // stage.setFullScreenExitHint("YOU CAN'T ESCAPE unless you press Q");
         // stage.setFullScreenExitKeyCombination(KeyCombination.valueOf("q"));
+
+        Text text = new Text("Quemado!");
+        text.setX(50);
+        text.setY(50);
+        text.setFont(Font.font("Verdana", 20));
+
+        text.setFill(Color.LIGHTBLUE);
+
+        Line line = new Line();
+        line.setStartX(200);
+        line.setStartY(200);
+        line.setEndX(500);
+        line.setEndY(200);
+        line.setStrokeWidth(5);
+        line.setStroke(Color.RED);
+        line.setOpacity(0.5);
+        line.setRotate(45);
+
+        Rectangle rectangle = new Rectangle();
+        rectangle.setX(100);
+        rectangle.setY(100);
+        rectangle.setWidth(100);
+        rectangle.setHeight(100);
+        rectangle.setFill(Color.DARKRED);
+        rectangle.setStrokeWidth(5);
+        rectangle.setStroke(Color.BLACK);
+
+        Polygon triangle = new Polygon();
+        triangle.getPoints().setAll(
+                200.0, 200.0,
+                300.0, 300.0,
+                200.0, 300.0
+        );
+        triangle.setFill(Color.INDIGO);
+
+        Circle circle = new Circle();
+        circle.setCenterX(350);
+        circle.setCenterY(350);
+        circle.setRadius(50);
+        circle.setFill(Color.LIME);
+
+        Image image = new Image("logo.png");
+        ImageView imageView = new ImageView(image);
+        imageView.setX(400);
+        imageView.setY(400);
+
+        root.getChildren().add(text); // Agrega el componente a la raiz
+        root.getChildren().add(line);
+        root.getChildren().add(rectangle);
+        root.getChildren().add(triangle);
+        root.getChildren().add(circle);
+        root.getChildren().add(imageView);
+
         stage.setScene(scene);
         stage.show(); // Siempre debe ir al final
     }
