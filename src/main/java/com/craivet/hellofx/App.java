@@ -1,12 +1,11 @@
 package com.craivet.hellofx;
 
 import java.io.IOException;
-import java.util.Objects;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -130,16 +129,19 @@ import javafx.stage.Stage;
  * aplicacion, lo que puede resultar en un codigo mas limpio y mantenible, especialmente en aplicaciones mas grandes y complejas.
  */
 
-public class HelloApplication extends Application {
+public class App extends Application {
 
     public static final int WIDTH = 600;
     public static final int HEIGHT = 600;
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("test.fxml")));
+        // Otra forma de cargar el archivo .fxml en el Scene
+        // Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test.fxml"));
         stage.setTitle("Title");
-        stage.setScene(new Scene(root, WIDTH, HEIGHT));
+        stage.getIcons().setAll(new Image("logo.png"));
+        stage.setScene(new Scene(fxmlLoader.load()));
         stage.show();
     }
 

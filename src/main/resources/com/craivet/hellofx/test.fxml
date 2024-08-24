@@ -2,10 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/22">
-    <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Button"/>
-    <Button layoutX="274.0" layoutY="188.0" mnemonicParsing="false" text="Button"/>
-    <Button layoutX="534.0" layoutY="361.0" mnemonicParsing="false" text="Button"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.craivet.hellofx.Controller">
+    <Button layoutX="274.0" layoutY="14.0" mnemonicParsing="false" onAction="#up" text="UP" />
+    <Button layoutX="14.0" layoutY="188.0" mnemonicParsing="false" onAction="#left" text="LEFT" />
+    <Button layoutX="274.0" layoutY="361.0" mnemonicParsing="false" onAction="#down" text="DOWN" />
+    <Button layoutX="534.0" layoutY="188.0" mnemonicParsing="false" onAction="#right" text="RIGHT" />
+   <Circle fx:id="circle" fill="DODGERBLUE" layoutX="290.0" layoutY="200.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
 </AnchorPane>
