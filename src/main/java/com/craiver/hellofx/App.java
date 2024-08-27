@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -132,22 +133,10 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    public static final int WIDTH = 600;
-    public static final int HEIGHT = 600;
-
     @Override
     public void start(Stage stage) throws IOException {
-        // Otra forma de cargar el archivo .fxml en el Scene
-        // Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        /* La barra diagonal al principio del recurso indica que la busqueda del recurso debe comenzar desde la raiz del
-         * classpath (rusa absoluta). Sin la barra, la busqueda se realiza de forma relativa al paquete de la clase actual. */
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm()); // Para cargar css en una sola scene
-        /* Para cargar css es mas de una scene
-        String css = getClass().getResource("style.css").toExternalForm();
-        scene.getStylesheets().add(css);
-        scene2.getStylesheets().add(css); */
+        Parent root = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("/scene1.fxml"))));
+        Scene scene = new Scene(root);
         stage.setTitle("Title");
         stage.getIcons().setAll(new Image("logo.png"));
         stage.setScene(scene);
