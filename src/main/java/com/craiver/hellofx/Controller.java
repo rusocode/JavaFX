@@ -2,28 +2,36 @@ package com.craiver.hellofx;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
-import java.util.Objects;
+import java.io.IOException;
 
 public class Controller {
 
     @FXML
-    Button myButton;
+    private Label myLabel;
     @FXML
-    ImageView myImageView;
+    private TextField myTextField;
+    @FXML
+    private Button myButton;
 
-    Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/2003.png")));
+    private int age;
 
-    public void displayImage() {
 
-        myImageView.setImage(image);
-
+    public void submit(ActionEvent event) {
+        try {
+            age = Integer.parseInt(myTextField.getText());
+            if (age >= 18) {
+                myLabel.setText("You are now signed up!");
+            } else myLabel.setText("You must be 18+");
+            System.out.println(age);
+        } catch (NumberFormatException e) {
+            myLabel.setText("Enter only numbers plz");
+        } catch (Exception e) {
+            myLabel.setText("Error");
+        }
     }
 
 
