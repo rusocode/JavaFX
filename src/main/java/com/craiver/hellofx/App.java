@@ -1,6 +1,7 @@
-package com.craivet.hellofx;
+package com.craiver.hellofx;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -115,7 +116,7 @@ import javafx.stage.Stage;
  * <?import javafx.scene.control.Label?>
  * <?import javafx.scene.layout.VBox?>
  *
- * <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.craivet.hellofx.HelloController">
+ * <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.craivet.hellofx.Controller">
  *     <Label fx:id="welcomeText"/>
  *     <Button text="Hello!" onAction="#onHelloButtonClick"/>
  * </VBox>
@@ -138,10 +139,18 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         // Otra forma de cargar el archivo .fxml en el Scene
         // Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("hello-view.fxml")));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("test.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        /* La barra diagonal al principio del recurso indica que la busqueda del recurso debe comenzar desde la raiz del
+         * classpath (rusa absoluta). Sin la barra, la busqueda se realiza de forma relativa al paquete de la clase actual. */
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm()); // Para cargar css en una sola scene
+        /* Para cargar css es mas de una scene
+        String css = getClass().getResource("style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+        scene2.getStylesheets().add(css); */
         stage.setTitle("Title");
         stage.getIcons().setAll(new Image("logo.png"));
-        stage.setScene(new Scene(fxmlLoader.load()));
+        stage.setScene(scene);
         stage.show();
     }
 
