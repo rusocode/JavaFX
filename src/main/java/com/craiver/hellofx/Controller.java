@@ -2,41 +2,22 @@ package com.craiver.hellofx;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
-import java.io.IOException;
-import java.util.Objects;
+import javafx.scene.control.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class Controller {
 
     @FXML
-    private Label label;
+    private Pane pane;
     @FXML
-    private CheckBox checkBox;
-    @FXML
-   private ImageView imageView;
+    private ColorPicker colorPicker;
 
-   Image image1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/sword.png")));
-    Image image2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/axe.png")));
-
-    public void change(ActionEvent event) {
-        if (checkBox.isSelected()){
-
-            label.setText("ON");
-            System.out.println("ON");
-            imageView.setImage(image1);
-        }
-        else{
-            label.setText("0FF");
-            System.out.println("OFF");
-            imageView.setImage(image2);
-        }
+    public void changeColor(ActionEvent event) {
+        Color color = colorPicker.getValue();
+        pane.setBackground(new Background(new BackgroundFill(color, null, null)));
     }
-
-
 }
