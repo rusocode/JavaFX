@@ -1,32 +1,23 @@
 package com.craiver.hellofx;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class Controller implements Initializable {
 
     @FXML
-    private Label label;
+    private Slider volumen;
     @FXML
-    private ChoiceBox<String> choiceBox;
+    private Label label;
 
-
-    private final String[] food = {"pizza", "sushi", "empanada de carne"};
-
-    public void getFood(ActionEvent e) {
-        label.setText(choiceBox.getValue());
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        choiceBox.getItems().addAll(food);
-        choiceBox.setOnAction(this::getFood);
+        label.setText(String.valueOf((int )volumen.getValue()));
+        volumen.valueProperty().addListener((observableValue, number, t1) -> label.setText(String.valueOf((int)volumen.getValue())));
     }
-
-
 }
