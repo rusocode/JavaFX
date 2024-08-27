@@ -2,14 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.craiver.hellofx.Controller">
-    <Button layoutX="246.0" layoutY="188.0" mnemonicParsing="false" onAction="#switchScene2" text="Switch to scene 2" />
-    <Label layoutX="143.0" layoutY="14.0" text="This is scene 1">
-        <font>
-            <Font size="50.0" />
-        </font>
-    </Label>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.craiver.hellofx.Scene1Controller">
+    <Button fx:id="loginButton" layoutX="135.0" layoutY="221.0" mnemonicParsing="false" onAction="#login" text="login" />
+    <Label layoutX="54.0" layoutY="180.0" text="username:" />
+   <TextField fx:id="nameText" layoutX="124.0" layoutY="176.0" />
 </AnchorPane>
