@@ -5,34 +5,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class Controller {
 
     @FXML
-    Button logoutButton;
+    Button myButton;
     @FXML
-    AnchorPane scenePane;
+    ImageView myImageView;
 
-    Stage stage;
+    Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/2003.png")));
 
-    public void logout(ActionEvent e) {
+    public void displayImage() {
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You're about to logout!");
-        alert.setContentText("Do you want to save configuration before exiting?:");
-
-        // Si se presiono OK
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            // Obtiene la escena actual en la que se esta trabajando
-            stage = (Stage) scenePane.getScene().getWindow();
-            System.out.println("You successfully logged out");
-            stage.close();
-        }
-
+        myImageView.setImage(image);
 
     }
 

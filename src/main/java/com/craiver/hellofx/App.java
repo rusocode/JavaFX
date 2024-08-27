@@ -4,13 +4,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -143,29 +139,6 @@ public class App extends Application {
         stage.setTitle("Title");
         stage.setScene(scene);
         stage.show();
-
-        // Al cerrar desde la cruz
-        stage.setOnCloseRequest(windowEvent -> {
-            windowEvent.consume(); // Evita que el programa se cierre cuando se presiona cancelar
-            logout(stage);
-        });
-    }
-
-    public void logout(Stage stage) {
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You're about to logout!");
-        alert.setContentText("Do you want to save configuration before exiting?:");
-
-        // Si se presiono OK
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            // Obtiene la escena actual en la que se esta trabajando
-            System.out.println("You successfully logged out");
-            stage.close();
-        }
-
-
     }
 
     public static void main(String[] args) {
