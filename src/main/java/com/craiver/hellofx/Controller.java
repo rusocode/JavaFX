@@ -1,23 +1,32 @@
 package com.craiver.hellofx;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 
-public class Controller {
+public class Controller implements Initializable {
 
     @FXML
-    private Pane pane;
+    private Label label;
     @FXML
-    private ColorPicker colorPicker;
+    private ChoiceBox<String> choiceBox;
 
-    public void changeColor(ActionEvent event) {
-        Color color = colorPicker.getValue();
-        pane.setBackground(new Background(new BackgroundFill(color, null, null)));
+
+    private final String[] food = {"pizza", "sushi", "empanada de carne"};
+
+    public void getFood(ActionEvent e) {
+        label.setText(choiceBox.getValue());
     }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        choiceBox.getItems().addAll(food);
+        choiceBox.setOnAction(this::getFood);
+    }
+
+
 }
