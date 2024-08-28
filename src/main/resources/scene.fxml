@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="398.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.craiver.hellofx.Controller">
-    <ListView fx:id="listView" layoutX="99.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0"/>
-    <Label fx:id="label" alignment="CENTER" layoutY="39.0" prefHeight="17.0" prefWidth="398.0" text="Select a food">
-        <font>
-            <Font size="24.0"/>
-        </font>
-    </Label>
-</AnchorPane>
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.craiver.hellofx.Controller"/>
