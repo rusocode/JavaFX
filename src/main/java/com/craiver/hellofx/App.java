@@ -1,6 +1,7 @@
 package com.craiver.hellofx;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 
 import javafx.application.Application;
@@ -142,8 +143,6 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader((Objects.requireNonNull(getClass().getResource("/scene.fxml"))));
         Parent root = loader.load();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
-        
-        // Font.loadFont(getClass().getResourceAsStream("medieval.ttf"), 18);
         // Carga el archivo CSS
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
         stage.setTitle("Title");

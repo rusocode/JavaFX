@@ -1,10 +1,20 @@
-@font-face {
-    font-family: 'Medieval'; /* Nombre para referenciar esta fuente */
-    src: url('Medieval.ttf');
+/* https://guigarage.com/2014/10/integrate-custom-fonts-javafx-application-using-css/ */
+
+/* A partir de Java >= 1.8u60 se ignora el atributo “font-family” y hay que utilizar el nombre real del TTF. Basicamente
+ * el selector @font-face para especificar la fuente no parece ser necesario. */
+/* @font-face {
+    font-family: 'Medieval';
+    src: url('medieval.ttf');
+} */
+
+/* Para definir una fuente global para todos los componentes, simplemente puede configurar la fuente en la clase de
+ * estilo .text. La forma Text en JavaFX contiene esta pseudoclase de forma predeterminada y todos los nodos que
+ * representan un texto en la pantalla usan la forma Text internamente. */
+.text {
+    -fx-font-family: 'BlackPearl', monospace; // Knights Quest
 }
 
 .button {
-    -fx-font-family: 'Medieval', monospace;
     -fx-font-size: 18px;
     -fx-background-color: #8B4513; /* Marron oscuro */
     -fx-text-fill: #FFD700; /* Dorado */
