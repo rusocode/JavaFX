@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.Objects;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 /**
@@ -134,32 +133,19 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 600;
+
     @Override
     public void start(Stage stage) throws IOException {
+        // Carga el FXML
         FXMLLoader loader = new FXMLLoader((Objects.requireNonNull(getClass().getResource("/scene.fxml"))));
         Parent root = loader.load();
-        Controller controller = loader.getController();
-        Scene scene = new Scene(root);
-        // Establece el contolador de eventos a la scene cuando se presiona una tecla
-        // Cuando detecta un evento de tecla
-        scene.setOnKeyPressed(keyEvent -> {
-            switch (keyEvent.getCode()) {
-                case W:
-                    controller.moveUp();
-                    break;
-                case S:
-                    controller.moveDown();
-                    break;
-                case A:
-                    controller.moveLeft();
-                    break;
-                case D:
-                    controller.moveRight();
-                    break;
-                default:
-                    break;
-            }
-        });
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        
+        // Font.loadFont(getClass().getResourceAsStream("medieval.ttf"), 18);
+        // Carga el archivo CSS
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
         stage.setTitle("Title");
         stage.setScene(scene);
         stage.show();
