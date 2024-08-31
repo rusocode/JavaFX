@@ -1,14 +1,13 @@
 package com.craiver.hellofx;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.text.Font;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -134,23 +133,42 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    // Musica para la Main Menu?
+    // https://www.youtube.com/watch?v=eE8M1-SAYCU&list=PLA3CCrYGqFaxj9REbHBt7xnSWXy4HETbM&index=103
+
     public static final int WIDTH = 800;
     public static final int HEIGHT = 600;
 
     @Override
     public void start(Stage stage) throws IOException {
         // Carga el FXML
-        FXMLLoader loader = new FXMLLoader((Objects.requireNonNull(getClass().getResource("/scene.fxml"))));
+        FXMLLoader loader = new FXMLLoader((Objects.requireNonNull(getClass().getResource("/scene.fxml")))); // El "/" al principio indica que debe buscar desde la raiz de la carpeta resources
         Parent root = loader.load();
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         // Carga el archivo CSS
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
         stage.setTitle("Title");
+        stage.getIcons().add(new Image("logo.png"));
         stage.setScene(scene);
         stage.show();
     }
 
+    /**
+     * <p>
+     * La linea {@code System.setProperty("prism.lcdtext", "false");} cumple la funcion de desactivar el renderizado de texto LCD
+     * (Liquid Crystal Display) en el motor Prism de JavaFX. Esto afecta como se muestra el texto en toda la aplicacion. Cuando se
+     * establece en "false", JavaFX utiliza un metodo de renderizado de texto estandar en lugar de la tecnica LCD, que normalmente
+     * aprovecha la estructura de subpixeles de las pantallas LCD para mejorar la nitidez del texto, especialmente en tamanios
+     * pequenios. Esta configuracion se aplica tipicamente al inicio de la aplicacion, antes de que se inicialice el toolkit de
+     * JavaFX. Es util cuando se busca una consistencia visual entre diferentes dispositivos o cuando se prefiere el renderizado
+     * estandar por razones de rendimiento o esteticas. Es importante notar que esto es diferente del anti-aliasing; mientras que
+     * el anti-aliasing suaviza los bordes del texto, el texto LCD utiliza los subpixeles para mejorar la nitidez. Desactivar el
+     * texto LCD puede resultar en un texto menos nitido, pero puede mejorar la consistencia visual en distintos sistemas. Esta
+     * configuracion afecta a toda la aplicacion JavaFX, a diferencia de metodos como {@code setFontSmoothingType()} que se
+     * aplican a elementos de texto individuales.
+     */
     public static void main(String[] args) {
+        // System.setProperty("prism.lcdtext", "false"); // Parece mejor dejarlo activado (true o por defecto) para la fuente Teeny Tiny Pixls
         launch();
     }
 

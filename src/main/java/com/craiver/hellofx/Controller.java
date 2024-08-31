@@ -1,25 +1,30 @@
-package com.craiver.hellofx;
+package com.craiver.hellofx; // com.craiver.hellofx.Controller
 
 import java.io.InputStream;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 /**
  * Controlador de eventos que maneja la logica de la interfaz y las interacciones del usuario.
  * <p>
  * La anotacion {@code @FXML} inyecta todos los valores que se encuentran detro del archivo .fxml en el controlador.
+ * <p>
  */
 
 public class Controller {
 
     @FXML
-    public Button button;
+    private Button btnNewGame;
+    @FXML
+    private Button btnLoadGame;
+    @FXML
+    private Button btnQuit;
 
-    public void iniciarAventura() {
-        System.out.println("Aventura iniciada!");
-    }
+    @FXML
+    private VBox mainMenu;
 
     /**
      * <p>
@@ -37,7 +42,7 @@ public class Controller {
          * loadFont(). Por lo tanto seria innecesario especificar el tamaño desde aca, pero como el metodo loadFont de la clase
          * Font admite dos parametros, no es posible omitirlo. */
         int fontSize = 24;
-        String fontPath = "/medieval2.ttf";  // El "/" al principio indica que debe buscar desde la raiz de la carpeta resources
+        String fontPath = "/fonts/Teeny Tiny Pixls.ttf";
         InputStream input = getClass().getResourceAsStream(fontPath);
         if (input == null) System.err.println("Could not find font file: " + fontPath);
         else {

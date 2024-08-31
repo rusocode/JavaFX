@@ -1,34 +1,72 @@
 /* https://guigarage.com/2014/10/integrate-custom-fonts-javafx-application-using-css/ */
+/* https://www.reddit.com/r/JavaFX/comments/mgsh74/why_do_fonts_look_so_bad_on_javafx/ */
 
-/* A partir de Java >= 1.8u60 se ignora el atributo “font-family” y hay que utilizar el nombre real del TTF. Basicamente
- * el selector @font-face para especificar la fuente no parece ser necesario. */
+/* A partir de Java >= 1.8u60 no parece ser necesario usar el at-rule @font-family, ya que con especificar el nombre
+ * real de la fuente es suficiente. */
 /* @font-face {
-    font-family: 'Medieval';
-    src: url('medieval.ttf');
+    font-family: 'BlackPearl';
+    src: url('BlackPearl.ttf');
 } */
 
 /* Para definir una fuente global para todos los componentes, simplemente puede configurar la fuente en la clase de
  * estilo .text. La forma Text en JavaFX contiene esta pseudoclase de forma predeterminada y todos los nodos que
  * representan un texto en la pantalla usan la forma Text internamente. */
 .text {
-    -fx-font-family: 'BlackPearl', monospace; // Knights Quest
+    -fx-font-family: 'Teeny Tiny Pixls', monospace; /* Teeny Tiny Pixls */
 }
 
+#mainMenu {
+    -fx-background-image: url('textures/fondo2.jfif'); /**/
+    -fx-background-size: cover; /* Ajusta la imagen al VBox y recorta los bordes sobrantes */
+    -fx-alignment: center;
+    -fx-spacing: 20;
+}
+
+/* En JavaFX, los selectores de tipo (como button) no funcionan directamente porque JavaFX usa un sistema de estilos
+ * ligeramente diferente al CSS web estandar. JavaFX interpreta los selectores de manera mas estricta y requiere que se
+ * especifique la jerarquia completa del control. En JavaFX, debes usar .button en lugar de simplemente button. El punto
+ * . al principio indica que estas seleccionando todos los elementos que tienen la clase "button", que es como JavaFX
+ * identifica sus controles internamente. Ademas, JavaFX usa el prefijo -fx- para sus propiedades CSS especificas. */
+
 .button {
-    -fx-font-size: 18px;
-    -fx-background-color: #8B4513; /* Marron oscuro */
-    -fx-text-fill: #FFD700; /* Dorado */
-    -fx-border-color: #DAA520; /* Goldenrod */
-    -fx-border-width: 2px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
+    /* En caso de que se especifiquen dos valores, entonces el primer valor abarca top/bottom y el segundo right/left */
+    -fx-padding: 10px 10px; /* top right bottom left */
+    /* Si el tamanio de la fuente se especifica desde .css, entonces estaria de mas hacerlo desde aca. Aunque desde aca
+     * se especifica el tamanio de todos los botones, ahorrando codigo. ¿Pero si necesito especificar el tamanio en un
+     * boton especifico? */
+    -fx-font-size: 24px;
+    /* Efecto de gradiente que va desde #6b4226 a una version ligeramente mas oscura. El segundo gradiente añade mas
+     * profundidad con tres tonos. El tercer gradiente crea un sutil efecto de luz usando el color crema con baja
+     * opacidad. */
+    -fx-background-color:
+            linear-gradient(#6b4226, #5a351d),
+            linear-gradient(#6b4226 0%, #5a351d 50%, #492b18 100%),
+            linear-gradient(from 0% 0% to 15% 50%, rgba(228,221,187,0.4), rgba(228,221,187,0));
+    -fx-text-fill: #e4ddbb; /* Texto crema */
+    -fx-border-color: derive(#a67c52, -30%); /* Borde marron claro con un 20% mas oscuro */
+    -fx-border-width: 3px; /* Ancho del borde */
+    -fx-background-radius: 5px; /* Curvatura del fondo del borde */
+    -fx-border-radius: 5px; /* Curvatura del borde */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 5, 0.5, 0, 1); /* Sombra negra de profundidad */
+    -fx-cursor: hand; /* Cursor de mano */
 }
 
 .button:hover {
-    -fx-background-color: #A0522D; /* Siena */
+    -fx-background-color:
+        linear-gradient(#7b522e, #6b4226),
+        linear-gradient(#7b522e 0%, #6b4226 50%, #5a351d 100%),
+        linear-gradient(from 0% 0% to 15% 50%, rgba(228,221,187,0.6), rgba(228,221,187,0));
+    -fx-border-color: derive(#a67c52, -20%); /* Borde ligeramente mas claro en hover */
 }
 
 .button:pressed {
-    -fx-background-color: #654321; /* Marron oscuro */
-    -fx-text-fill: #FFF8DC; /* Cornsilk */
+    -fx-background-color:
+        linear-gradient(#5a351d, #492b18),
+        linear-gradient(#5a351d 0%, #492b18 50%, #38210f 100%),
+        linear-gradient(from 0% 0% to 15% 50%, rgba(228,221,187,0.3), rgba(228,221,187,0));
+    -fx-border-color: derive(#a67c52, -40%); /* Borde aun mas oscuro cuando esta presionado */
+    /* Traslada el elemento verticalmente 1px creando la ilusion de que el boton se esta "hundiendo" ligeramente. Este
+     * pequeño movimiento proporciona un feedback visual al usuario, simulando el comportamiento de un boton fisico al
+     * ser presionado. */
+    -fx-translate-y: 1px;
 }
