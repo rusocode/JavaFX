@@ -1,4 +1,4 @@
-package com.craiver.hellofx;
+package com.punkipunk.hellofx.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

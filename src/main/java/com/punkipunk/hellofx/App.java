@@ -1,4 +1,4 @@
-package com.craiver.hellofx;
+package com.punkipunk.hellofx;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -7,8 +7,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * <h3>JavaFX</h3>
@@ -133,22 +136,18 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    // Musica para la Main Menu?
-    // https://www.youtube.com/watch?v=eE8M1-SAYCU&list=PLA3CCrYGqFaxj9REbHBt7xnSWXy4HETbM&index=103
-
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
-
     @Override
     public void start(Stage stage) throws IOException {
-        // Carga el FXML
-        FXMLLoader loader = new FXMLLoader((Objects.requireNonNull(getClass().getResource("/scene.fxml")))); // El "/" al principio indica que debe buscar desde la raiz de la carpeta resources
-        Parent root = loader.load();
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
+        // Carga el FXML y lo almacena en Parent que es la clase base para todos los nodos que pueden tener hijos en el grafo de escena
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Scene.fxml"))); // El "/" al principio indica que debe buscar desde el root de la carpeta resources
+        // Esto establece el tamaño tanto para la Scene como para el Stage
+        Scene scene = new Scene(root);
         // Carga el archivo CSS
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm());
         stage.setTitle("Title");
         stage.getIcons().add(new Image("logo.png"));
+        /* En JavaFX, solo puedes tener una Scene activa por Stage a la vez, mientras que en Swing puedes tener multiples JPanels
+         * en un JFrame. */
         stage.setScene(scene);
         stage.show();
     }

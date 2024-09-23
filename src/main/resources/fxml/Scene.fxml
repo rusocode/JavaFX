@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- Declara la version XML y la codificacion de caracteres -->
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<!--
+Define la estructura de la interfaz y enlaza con el controlador. En general, es mejor mantener la separacion de
+responsabilidades: el FXML para la estructura y el CSS para el estilo (como alignment, padding, colores, etc.), evitando
+asi, la duplicacion de propiedades.
+-->
+
+<!--
+Las propiedades maxHeight="-Infinity" y maxWidth="-Infinity" permiten que el VBox crezca sin limites en ambas
+direcciones. La propiedad mnemonicParsing="false" desactiva el parsing de teclas mnemonicas (atajos de teclado). Las
+propiedades prefHeight="58.0" prefWidth="200.0" establecen el tamaño preferido del boton. Si bo se especifican tamaños
+para el AnchorPane o el VBox, entonces se ajustan al tamaño de su contenido o de su contenedor padre. Si no hay
+propiedades de anclaje (AnchorPane.topAnchor, etc.) para el VBox dentro del AnchorPane, significa que el VBox se
+posicionara por defecto en la esquina superior izquierda del AnchorPane.
+-->
+
+<!--
+xmlns="http://javafx.com/javafx/22" este es el espacio de nombres por defecto para JavaFX, permitiendo usar elementos
+como <Button>, <VBox>, etc., directamente sin necesidad de un prefijo.
+xmlns:fx="http://javafx.com/fxml/1" define el espacio de nombres para caracteristicas especificas de FXML. El prefijo
+"fx" se usa para acceder a estas caracteristicas. Permite usar atributos y elementos especiales de FXML, como fx:id,
+fx:controller, etc.
+-->
+
+<!--
+El contenedor principal es un VBox, que organiza sus elementos hijos en una columna vertical.
+-->
+
+<VBox prefHeight="600.0" prefWidth="800.0" fx:id="mainMenu" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.punkipunk.hellofx.controllers.Controller">
+
+    <ImageView fx:id="logoImage">
+        <Image url="@../logo64.png"/>
+    </ImageView>
+
+    <!-- Espaciador entre el logo y los botones
+         Region es un nodo invisible que se utiliza como espaciador.
+         VBox.vgrow="ALWAYS" le indica al VBox que deje que este Region crezca para ocupar el espacio disponible.
+         maxHeight="40" establece una altura maxima de 40 pixeles.
+     -->
+    <Region VBox.vgrow="ALWAYS" maxHeight="50"/>
+
+    <!-- VBox interno para los botones -->
+    <VBox alignment="CENTER" spacing="10">
+        <Button text="NEW GAME"/>
+        <Button text="LOAD GAME"/>
+        <Button text="QUIT"/>
+    </VBox>
+
+    <!-- AnchorPane es un contenedor que permite anclar nodos en posiciones especificas dentro de el -->
+    <AnchorPane VBox.vgrow="ALWAYS"> <!-- Permite que este AnchorPane crezca para ocupar el espacio disponible -->
+        <Label fx:id="labelVersion" text="2D-RPG 0.0.11a" AnchorPane.leftAnchor="10" AnchorPane.bottomAnchor="10"/>
+    </AnchorPane>
+
+</VBox>

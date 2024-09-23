@@ -1,4 +1,4 @@
-package com.craiver.hellofx; // com.craiver.hellofx.Controller
+package com.punkipunk.hellofx.controllers;
 
 import java.io.InputStream;
 
@@ -11,7 +11,6 @@ import javafx.scene.text.Font;
  * Controlador de eventos que maneja la logica de la interfaz y las interacciones del usuario.
  * <p>
  * La anotacion {@code @FXML} inyecta todos los valores que se encuentran detro del archivo .fxml en el controlador.
- * <p>
  */
 
 public class Controller {

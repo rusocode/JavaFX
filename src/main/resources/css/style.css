@@ -12,14 +12,24 @@
  * estilo .text. La forma Text en JavaFX contiene esta pseudoclase de forma predeterminada y todos los nodos que
  * representan un texto en la pantalla usan la forma Text internamente. */
 .text {
-    -fx-font-family: 'Teeny Tiny Pixls', monospace; /* Teeny Tiny Pixls */
+    -fx-font-family: 'Teeny Tiny Pixls', monospace;
 }
 
 #mainMenu {
-    -fx-background-image: url('textures/fondo2.jfif'); /**/
+    -fx-background-image: url('../textures/fondo2.jfif'); /* No entiendo por que al agregar "../" ahora carga la textura */
     -fx-background-size: cover; /* Ajusta la imagen al VBox y recorta los bordes sobrantes */
     -fx-alignment: center;
-    -fx-spacing: 20;
+    -fx-padding: 70 0 0 0; /* Define un margen interior en el VBox. En este caso, solo se aplica un margen superior de 70 pixeles. */ /* top right bottom left */
+}
+
+#logoImage {
+    -fx-fit-width: 200;
+    -fx-fit-height: 100;
+    -fx-preserve-ratio: true; /* Mantiene la relacion de aspecto de la imagen */
+}
+
+#labelVersion {
+    -fx-text-fill: #e4ddbb;
 }
 
 /* En JavaFX, los selectores de tipo (como button) no funcionan directamente porque JavaFX usa un sistema de estilos
@@ -27,23 +37,20 @@
  * especifique la jerarquia completa del control. En JavaFX, debes usar .button en lugar de simplemente button. El punto
  * . al principio indica que estas seleccionando todos los elementos que tienen la clase "button", que es como JavaFX
  * identifica sus controles internamente. Ademas, JavaFX usa el prefijo -fx- para sus propiedades CSS especificas. */
-
 .button {
+    -fx-pref-width: 200;
     /* En caso de que se especifiquen dos valores, entonces el primer valor abarca top/bottom y el segundo right/left */
-    -fx-padding: 10px 10px; /* top right bottom left */
-    /* Si el tamanio de la fuente se especifica desde .css, entonces estaria de mas hacerlo desde aca. Aunque desde aca
-     * se especifica el tamanio de todos los botones, ahorrando codigo. ¿Pero si necesito especificar el tamanio en un
-     * boton especifico? */
+    -fx-padding: 10px 10px;
     -fx-font-size: 24px;
-    /* Efecto de gradiente que va desde #6b4226 a una version ligeramente mas oscura. El segundo gradiente añade mas
-     * profundidad con tres tonos. El tercer gradiente crea un sutil efecto de luz usando el color crema con baja
-     * opacidad. */
+     /* Efecto de gradiente que va desde #6b4226 a una version ligeramente mas oscura. El segundo gradiente añade mas
+      * profundidad con tres tonos. El tercer gradiente crea un sutil efecto de luz usando el color crema con baja
+      * opacidad. */
     -fx-background-color:
-            linear-gradient(#6b4226, #5a351d),
-            linear-gradient(#6b4226 0%, #5a351d 50%, #492b18 100%),
-            linear-gradient(from 0% 0% to 15% 50%, rgba(228,221,187,0.4), rgba(228,221,187,0));
+         linear-gradient(#6b4226, #5a351d),
+         linear-gradient(#6b4226 0%, #5a351d 50%, #492b18 100%),
+         linear-gradient(from 0% 0% to 15% 50%, rgba(228,221,187,0.4), rgba(228,221,187,0));
     -fx-text-fill: #e4ddbb; /* Texto crema */
-    -fx-border-color: derive(#a67c52, -30%); /* Borde marron claro con un 20% mas oscuro */
+    -fx-border-color: derive(#a67c52, -30%); /* Borde marron claro con un 30% mas oscuro */
     -fx-border-width: 3px; /* Ancho del borde */
     -fx-background-radius: 5px; /* Curvatura del fondo del borde */
     -fx-border-radius: 5px; /* Curvatura del borde */
