@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="300" prefWidth="300" styleClass="shadow-pane" stylesheets="@../css/application.css"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.punkipunk.hellofx.controllers.PausableAnimationController">
+    <center>
+        <VBox fx:id="backgroundPane" styleClass="background-pane" spacing="10">
+
+            <GridPane hgap="10" vgap="5">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                    <ColumnConstraints hgrow="SOMETIMES"/>
+                </columnConstraints>
+
+                <ImageView GridPane.columnIndex="0">
+                    <Image url="@../logo.png"/>
+                </ImageView>
+
+                <HBox id="right-icons" alignment="CENTER_RIGHT" spacing="10" GridPane.columnIndex="2">
+                    <Button onAction="#handleGitButtonClicked" styleClass="git-button"/>
+                    <Button onAction="#handleExitButtonClicked" styleClass="exit-button"/>
+                </HBox>
+
+                <padding>
+                    <Insets top="5" right="5" bottom="5" left="5"/>
+                </padding>
+
+            </GridPane>
+
+            <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="transparent-background" VBox.vgrow="ALWAYS">
+                <VBox alignment="CENTER" spacing="20">
+                    <HBox alignment="CENTER">
+                        <Label fx:id="timerClock" styleClass="app-text"/>
+                        <Label styleClass="app-text" text=" s"/>
+                    </HBox>
+                    <HBox alignment="CENTER" spacing="25.0">
+                        <Button onAction="#resetTimer" styleClass="restart"/>
+                        <Button onAction="#stopTimer" styleClass="stop"/>
+                        <Button fx:id="playPauseSwitch" onAction="#playPauseSwitchPressed" styleClass="play"/>
+                    </HBox>
+                </VBox>
+            </ScrollPane>
+
+        </VBox>
+    </center>
+</BorderPane>

@@ -2,7 +2,6 @@ package com.punkipunk.hellofx;
 
 import java.util.Objects;
 
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,12 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-/**
- * Se puede pausar un temporizador de animacion extendiendo la clase AnimationTimer para registrar las marcas de tiempo o la
- * duracion de un evento de pausa. Al reiniciar la animacion, la duracion total de la pausa se resta de cada marca de tiempo para
- * dar la apariencia de una animacion continua.
- */
 
 public class App2 extends Application {
 
@@ -30,7 +23,7 @@ public class App2 extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/MainView.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/PausableAnimationView.fxml")));
 
         root.setOnMousePressed(event -> {
             xOffset = event.getSceneX();

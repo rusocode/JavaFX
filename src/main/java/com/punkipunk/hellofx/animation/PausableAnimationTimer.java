@@ -11,6 +11,10 @@ import javafx.beans.property.SimpleDoubleProperty;
  * animaciones. Cada instancia de AnimationTimer recibe la misma marca de tiempo en cada frame, lo que permite una sincronizacion
  * precisa entre multiples animaciones. Sin embargo, esta caracteristica tambien significa que JavaFX carece de soporte nativo
  * para pausar animaciones.
+ * <p>
+ * <b>Se puede pausar un temporizador de animacion extendiendo la clase AnimationTimer para registrar las marcas de tiempo o la
+ * duracion de un evento de pausa. Al reiniciar la animacion, la duracion total de la pausa se resta de cada marca de tiempo para
+ * dar la apariencia de una animacion continua.</b>
  * <h3>Funcionamiento de start() y stop()</h3>
  * <ol>
  * <li>{@code start()}
@@ -101,7 +105,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * <li>Reanuda la animacion desde el punto donde se pauso.
  * <li>Ajusta el tiempo de inicio para mantener la continuidad.
  * </ul>
- * {@code tick(long relativeNow)}
+ * {@code tick(long elapsed)}
  * <ul>
  * <li>Metodo abstracto que se llama en cada frame cuando la animacion no esta pausada.
  * <li>Los usuarios deben implementar este metodo para definir el comportamiento de la animacion.
@@ -110,7 +114,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * <pre>{@code
  * PausableAnimationTimer timer = new PausableAnimationTimer() {
  *     @Override
- *     public void tick(long relativeNow) {
+ *     public void tick(long elapsed) {
  *         // Implementar logica de animacion aqui
  *     }
  * };
@@ -136,6 +140,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * <p>
  * Links:
  * <a href="https://edencoding.com/animation-timer-pausing/">JavaFX Animation Timer – Pause, Stop, Play from Start</a>
+ * <a href="https://edencoding.com/javafxanimation-transitions-timelines-and-animation-timers/">Comprehensive guide to every element of the JavaFX animation toolkit</a>
  */
 
 public abstract class PausableAnimationTimer extends AnimationTimer {
@@ -143,7 +148,8 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
     // Tiempos de inicio/pausa
     private long pauseStart;
     private long animationStart; // Es el tiempo en que se inicio o se reanudo la animacion despues de una pausa
-    private boolean isPaused, isActive; // Estados del temporizador (pausado, activo)
+    // TODO Se podria cambiar el nombre a isActived?
+    private boolean isPaused, isActived; // Estados del temporizador (pausado, activado)
 
     // Gestiona la duracion de la animacion vinculando este valor al componente Label
     private final DoubleProperty animationDuration = new SimpleDoubleProperty();
@@ -162,8 +168,8 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
      *
      * @return true si el temporizador esta activado o false.
      */
-    public boolean isActive() {
-        return isActive;
+    public boolean isActived() {
+        return isActived;
     }
 
     /**
@@ -179,7 +185,7 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
      * Pausa el temporizador.
      */
     public void pause() {
-        if (!isPaused && isActive) {
+        if (!isPaused && isActived) {
             isPaused = true;
             pauseStart = System.nanoTime();
         }
@@ -201,7 +207,7 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
     @Override
     public void start() {
         super.start();
-        isActive = true;
+        isActived = true;
         isPaused = false;
         animationStart = System.nanoTime();
     }
@@ -212,22 +218,34 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
     @Override
     public void stop() {
         super.stop();
-        isActive = false;
+        isActived = false;
         isPaused = false;
         animationDuration.set(0);
     }
 
     /**
-     * Este metodo es el corazon del PausableAnimationTimer, manejando el calculo del tiempo, las pausas, y disparando las
-     * actualizaciones de la animacion en cada frame. JavaFX llama a este metodo automaticamente en cada frame de la animacion.
+     * <p>
+     * Este metodo es el corazon de {@code PausableAnimationTimer}, manejando el calculo del tiempo, las pausas, y disparando las
+     * actualizaciones de la animacion en cada frame.
+     * <p>
+     * JavaFX intenta llamar a {@code handle()} en cada frame de renderizado, lo que tipicamente ocurre alrededor de 60 veces por
+     * segundo (60 FPS) en la mayoria de las pantallas modernas. La frecuencia exacta de llamadas a handle() depende de varios
+     * factores, incluyendo la capacidad de procesamiento del sistema y la complejidad de la aplicacion. En condiciones ideales,
+     * podria llamarse hasta 60 veces por segundo o incluso mas en pantallas de alta frecuencia de actualizacion. No hay una
+     * limitacion inherente de 1 segundo; el sistema llama a handle() tan frecuentemente como puede dentro de las limitaciones del
+     * hardware y el rendimiento de la aplicacion. El codigo que calcula el tiempo transcurrido en cada llamada permite una
+     * animacion suave y precisa, independientemente de la frecuencia de las llamadas a handle(). La conversion del tiempo
+     * transcurrido de nanosegundos a segundos es solo para fines de visualizacion y no afecta la frecuencia de las llamadas. Si
+     * se desea limitar la frecuencia de actualizaciones o realizar acciones especificas en intervalos mas largos, se puede
+     * implementar una logica personalizada dentro del metodo handle().
      *
      * @param now tiempo actual del sistema en nanosegundos (marca de tiempo).
      */
     @Override
     public void handle(long now) {
-        /* Verifica si el temporizador esta activo y no esta en pausa para asegurarse que el codigo dentro del if solo se ejecute
-         * cuando la animacion debe estar en progreso. */
-        if (isActive && !isPaused) {
+        /* Verifica si el temporizador esta activado y no esta en pausado para asegurarse que el codigo dentro del if solo se
+         * ejecute cuando la animacion debe estar en progreso. */
+        if (isActived && !isPaused) {
             // Calcula el tiempo transcurrido desde el inicio de la animacion
             long elapsed = now - animationStart; // Duracion total de la animacion en nanosegundos, excluyendo los periodos de pausa
             /* Actualiza la propiedad animationDuration con el tiempo transcurrido, dividiendo elapsed por 1e9 (1 billon) para

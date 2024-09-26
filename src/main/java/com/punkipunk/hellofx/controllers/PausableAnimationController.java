@@ -20,7 +20,7 @@ import com.punkipunk.hellofx.animation.PausableAnimationTimer;
  * Este controlador utiliza PausableAnimationTimer y maneja los eventos de la interfaz de usuario.
  */
 
-public class MainViewController implements Initializable {
+public class PausableAnimationController implements Initializable {
 
     public VBox backgroundPane;
     public Button playPauseSwitch;
@@ -61,7 +61,7 @@ public class MainViewController implements Initializable {
             @Override
             public void start(Stage stage) {
             }
-        }.getHostServices().showDocument("https://github.com/edencoding/javafx-ui/");
+        }.getHostServices().showDocument("https://github.com/rusocode/javafx/");
         event.consume();
     }
 
@@ -94,7 +94,7 @@ public class MainViewController implements Initializable {
      * Alterna entre iniciar, pausar y reanudar el temporizador.
      */
     public void playPauseSwitchPressed() {
-        if (!timer.isActive()) timer.start();
+        if (!timer.isActived()) timer.start();
         else if (timer.isPaused()) timer.play();
         else timer.pause();
         updatePlayPauseButton(!timer.isPaused());
