@@ -7,11 +7,8 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * <h3>JavaFX</h3>
@@ -65,6 +62,13 @@ import javafx.stage.StageStyle;
  * <p>
  * JavaFX se posiciona como una solucion moderna y flexible para el desarrollo de aplicaciones graficas en Java, ofreciendo
  * capacidades avanzadas de interfaz de usuario y multimedia.
+ * <p>
+ * La propia aplicacion JavaFX imita hasta cierto punto el framework web HTML/JavaScript/CSS. Se basa en el paradigma
+ * Modelo-Vista-Controlador, en el que el archivo FXML cumple con la parte View. El Controlador... bueno... esa es la parte del
+ * controlador.
+ * <p>
+ * Como desarrollador, eres responsable de desarrollar los modelos (las estructuras de datos) que llenan la interfaz de usuario
+ * con informacion.
  * <h4>Capas del JavaFX</h4>
  * <p>
  * JavaFX utiliza una estructura jerarquica para organizar los elementos de la interfaz de usuario. En el nivel superior se
@@ -91,6 +95,9 @@ import javafx.stage.StageStyle;
  * <p>
  * Puedes pensar esto como un sandwich, en donde Stage es el pan, Scene la carne y todos los nodos son aderezos y condimentos.
  * <h3>FXML</h3>
+ * <p>
+ * Estado inicial de la aplicacion. La vista. Lo basico de la interfaz de usuario. En el entorno web, es el equivalente a HTML.
+ * A diferencia de HTML, en JavaFX tiene un estilo predeterminado.
  * <p>
  * El archivo FXML en JavaFX es un formato de archivo basado en XML utilizado para definir la estructura y el diseño de las
  * interfaces de usuario. FXML proporciona una forma declarativa de describir la interfaz grafica de una aplicacion JavaFX,

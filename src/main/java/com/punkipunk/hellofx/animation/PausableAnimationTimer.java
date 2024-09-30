@@ -148,7 +148,6 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
     // Tiempos de inicio/pausa
     private long pauseStart;
     private long animationStart; // Es el tiempo en que se inicio o se reanudo la animacion despues de una pausa
-    // TODO Se podria cambiar el nombre a isActived?
     private boolean isPaused, isActived; // Estados del temporizador (pausado, activado)
 
     // Gestiona la duracion de la animacion vinculando este valor al componente Label

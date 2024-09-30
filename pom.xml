@@ -16,6 +16,7 @@
         <javafx.version>22.0.2</javafx.version>
     </properties>
 
+    <!-- https://edencoding.com/javafx-maven/ -->
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>

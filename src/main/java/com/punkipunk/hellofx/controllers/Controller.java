@@ -11,13 +11,16 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
- * Controlador de eventos que maneja la logica de la interfaz y las interacciones del usuario.
  * <p>
- * La anotacion {@code @FXML} inyecta todos los valores que se encuentran detro del archivo .fxml en el controlador.
+ * Controla el entorno, añadiendo funcionalidad a los elementos definidos en el archivo FXML. En el entorno web, es el equivalente
+ * a JavaScript.
+ * <p>
+ * Tambien se puede utilizar para agregar elementos personalizados, aunque es un poco menos limpio.
  */
 
 public class Controller {
 
+    // La anotacion {@code @FXML} inyecta todos los valores que se encuentran detro del archivo .fxml en el controlador
     @FXML
     private Button btnNewGame;
     @FXML
