@@ -1,12 +1,12 @@
 package com.punkipunk.hellofx.controllers;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 
@@ -14,64 +14,97 @@ import com.punkipunk.hellofx.rendering.Renderer;
 import com.punkipunk.hellofx.controls.KeyPolling;
 import com.punkipunk.hellofx.models.Entity;
 import com.punkipunk.hellofx.animation.GameLoop;
+import com.punkipunk.hellofx.utils.Utils;
 
 public class GameController implements Initializable {
 
+    private static final float PLAYER_INITIAL_X = 350;
+    private static final float PLAYER_INITIAL_Y = 200;
+    private static final float PLAYER_INITIAL_SCALE = 0.5f;
+    private static final float THRUST = 20;
+    private static final float ROTATION = 90;
+
+    @FXML
     public Canvas gameCanvas;
+    @FXML
     public AnchorPane gameAnchor;
+    @FXML
+    public Label fpsLabel;
 
-    KeyPolling keys = KeyPolling.getInstance();
+    /* Para configurar nuestra clase KeyPolling, solo necesitamos configurar la escena que queremos rastrear en la clase
+     * principal. Como es estatica, podemos acceder a el facilmente en nuestro GameController, y como toda la logica esta
+     * correctamente encapsulada en la clase KeyPolling, ¡de lo unico que debemos preocuparnos es de preguntar si nuestras teclas
+     * de entrada de usuario estan presionadas actualmente! */
+    private KeyPolling keys;
 
-    private final Entity player = new Entity(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/textures/ship.png"))));
+    /* El renderizador imprime todas las entidades en el canvas en cada fotograma. Aunque en este juego solo hay una entidad, es
+     * util crear una lista para cuando se agregen mas elementos como enemigos o recursos. El proceso consiste en imprimir cada
+     * entidad utilizando su imagen almacenada, junto con su posicion, rotacion y escala correspondientes. */
+    private Entity player;
+    private Renderer renderer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initialiseCanvas();
+        keys = KeyPolling.getInstance();
+        player = new Entity(Utils.loadImage("/textures/ship.png"));
+        renderer = new Renderer(gameCanvas); // Le pasa el canvas antes del GameLoop para que pueda dibujar en el en cada fotograma
 
-        player.setDrawPosition(350, 200);
-        player.setScale(0.5f);
-
-        // Antes del GameLoop, le pasa el Canvas para que pueda dibuje en el en cada fotograma
-        Renderer renderer = new Renderer(gameCanvas);
-        /* En cada fotograma, el renderizador imprimira todas sus entidades en el canvas. Solo tenemos una entidad para este
-         * juego, pero a medida que agregas enemigos, recursos y mas, es util hacer una lista. Luego imprimimos cada una usando su
-         * imagen almacenada, posicion, rotacion y escala. */
-        renderer.addEntity(player);
-        renderer.setBackground(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/textures/SpaceBackground.jpg"))));
-
-        // Ejecuta el flujo de renderizado (rendering pipeline)
-        new GameLoop() {
-            @Override
-            public void tick(float secondsSinceLastFrame) {
-                renderer.prepare();
-                updatePlayerMovement(secondsSinceLastFrame);
-                // Una vez actualizada la posicion del jugador, dibuja el fondo y el jugador en un solo metodo
-                renderer.render();
-            }
-        }.start();
-
+        initCanvas();
+        initPlayer();
+        initRenderer();
+        startGameLoop();
     }
 
     /**
      * <p>
-     * Inicializa el canvas con cambio de tamanio automatico mediante el enlazamiento con el ancho y alto del AnchorPane para
+     * Inicializa el canvas con cambio de tamaño automatico mediante el enlazamiento con el ancho y alto del AnchorPane para
      * garantizar que nunca haya areas en blanco en la ventana de juego.
      */
-    private void initialiseCanvas() {
+    private void initCanvas() {
         gameCanvas.widthProperty().bind(gameAnchor.widthProperty());
         gameCanvas.heightProperty().bind(gameAnchor.heightProperty());
+    }
+
+    private void initPlayer() {
+        player.setPosition(PLAYER_INITIAL_X, PLAYER_INITIAL_Y);
+        player.setScale(PLAYER_INITIAL_SCALE);
+    }
+
+    private void initRenderer() {
+        renderer.addEntity(player);
+        renderer.setBackground(Utils.loadImage("/textures/SpaceBackground.jpg"));
+    }
+
+    /**
+     * Ejecuta el flujo de renderizado (rendering pipeline).
+     */
+    private void startGameLoop() {
+        GameLoop gameLoop = new GameLoop(this::tick);
+        // El fpsLabel se vincula a la propiedad FPS del GameLoop (asi de sencillo!)
+        fpsLabel.textProperty().bind(gameLoop.fpsProperty().concat(" FPS"));
+        gameLoop.start();
+    }
+
+    /**
+     * Logica especifica del juego.
+     */
+    private void tick(float deltaTime) {
+        renderer.prepare();
+        updatePlayerMovement(deltaTime);
+        // Una vez actualizada la posicion del player, dibuja el fondo y el player
+        renderer.render();
     }
 
     /**
      * Actualiza el movimiento del player.
      *
-     * @param frameDuration duracion del frame.
+     * @param deltaTime tiempo transcurrido desde el ultimo frame en segundos.
      */
-    private void updatePlayerMovement(float frameDuration) {
-        if (keys.isDown(KeyCode.W)) player.addThrust(20 * frameDuration);
-        else if (keys.isDown(KeyCode.S)) player.addThrust(-20 * frameDuration);
-        if (keys.isDown(KeyCode.D)) player.addTorque(120f * frameDuration);
-        else if (keys.isDown(KeyCode.A)) player.addTorque(-120f * frameDuration);
+    private void updatePlayerMovement(float deltaTime) {
+        if (keys.isDown(KeyCode.W)) player.applyThrust(THRUST * deltaTime);
+        else if (keys.isDown(KeyCode.S)) player.applyThrust(-THRUST * deltaTime);
+        if (keys.isDown(KeyCode.D)) player.applyRotation(ROTATION * deltaTime);
+        else if (keys.isDown(KeyCode.A)) player.applyRotation(-ROTATION * deltaTime);
         player.update();
     }
 

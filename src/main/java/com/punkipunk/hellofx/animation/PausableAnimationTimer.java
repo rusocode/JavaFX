@@ -148,44 +148,44 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
     // Tiempos de inicio/pausa
     private long pauseStart;
     private long animationStart; // Es el tiempo en que se inicio o se reanudo la animacion despues de una pausa
-    private boolean isPaused, isActived; // Estados del temporizador (pausado, activado)
+    private boolean paused, activated; // Estados del temporizador (pausado, activado)
 
-    // Gestiona la duracion de la animacion vinculando este valor al componente Label
-    private final DoubleProperty animationDuration = new SimpleDoubleProperty();
+    // Gestiona el tiempo de la animacion vinculando este valor al componente Label
+    private final DoubleProperty animationTime = new SimpleDoubleProperty();
 
     /**
      * Comprueba si el temporizador esta pausado.
      *
-     * @return true si el temporizador esta pausado o false.
+     * @return true si el temporizador esta pausado o false en caso contrario.
      */
     public boolean isPaused() {
-        return isPaused;
+        return paused;
     }
 
     /**
      * Comprueba si el temporizador esta activado.
      *
-     * @return true si el temporizador esta activado o false.
+     * @return true si el temporizador esta activado o false en caso contrario.
      */
-    public boolean isActived() {
-        return isActived;
+    public boolean isActivated() {
+        return activated;
     }
 
     /**
-     * Obtiene el objeto DoubleProperty.
+     * Obtiene el tiempo de la animacion.
      *
-     * @return el objeto DoubleProperty.
+     * @return el tiempo de la animacion.
      */
-    public DoubleProperty animationDurationProperty() {
-        return animationDuration;
+    public DoubleProperty getAnimationTime() {
+        return animationTime;
     }
 
     /**
      * Pausa el temporizador.
      */
     public void pause() {
-        if (!isPaused && isActived) {
-            isPaused = true;
+        if (!paused && activated) {
+            paused = true;
             pauseStart = System.nanoTime();
         }
     }
@@ -194,8 +194,8 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
      * Reanuda el temporizador.
      */
     public void play() {
-        if (isPaused) {
-            isPaused = false;
+        if (paused) {
+            paused = false;
             animationStart += (System.nanoTime() - pauseStart);
         }
     }
@@ -206,8 +206,8 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
     @Override
     public void start() {
         super.start();
-        isActived = true;
-        isPaused = false;
+        activated = true;
+        paused = false;
         animationStart = System.nanoTime();
     }
 
@@ -217,9 +217,9 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
     @Override
     public void stop() {
         super.stop();
-        isActived = false;
-        isPaused = false;
-        animationDuration.set(0);
+        activated = false;
+        paused = false;
+        animationTime.set(0);
     }
 
     /**
@@ -242,15 +242,15 @@ public abstract class PausableAnimationTimer extends AnimationTimer {
      */
     @Override
     public void handle(long now) {
-        /* Verifica si el temporizador esta activado y no esta en pausado para asegurarse que el codigo dentro del if solo se
-         * ejecute cuando la animacion debe estar en progreso. */
-        if (isActived && !isPaused) {
-            // Calcula el tiempo transcurrido desde el inicio de la animacion
-            long elapsed = now - animationStart; // Duracion total de la animacion en nanosegundos, excluyendo los periodos de pausa
-            /* Actualiza la propiedad animationDuration con el tiempo transcurrido, dividiendo elapsed por 1e9 (1 billon) para
-             * convertir nanosegundos a segundos. Esto permite que otros componentes de la UI (como el timerClock) muestren la
-             * duracion actual de la animacion en segundos. */
-            animationDuration.set(elapsed / 1e9);
+        /* Verifica si el temporizador esta activado y no pausado para asegurarse que el codigo dentro del if solo se ejecute
+         * cuando la animacion este en progeso. */
+        if (activated && !paused) {
+            // Calcula el tiempo transcurrido desde el inicio de la animacion en nanosegundos, excluyendo los periodos de pausa
+            long elapsed = now - animationStart;
+            /* Actualiza la propiedad animationTime con el tiempo transcurrido, dividiendo elapsed por 1e9 (1 billon) para
+             * convertir nanosegundos a segundos. Esto permite que otros componentes de la UI (como el timerClock) muestren el
+             * tiempo la animacion en segundos. */
+            animationTime.set(elapsed / 1e9);
             tick(elapsed);
         }
     }

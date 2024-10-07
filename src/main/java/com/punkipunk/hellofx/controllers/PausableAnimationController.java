@@ -24,7 +24,7 @@ public class PausableAnimationController implements Initializable {
 
     public VBox backgroundPane;
     public Button playPauseSwitch;
-    // Componente de tipo Label para mostrar la duracion de la animacion
+    // Componente de tipo Label para mostrar el tiempo de la animacion
     public Label timerClock;
 
     PausableAnimationTimer timer = new PausableAnimationTimer() {
@@ -35,24 +35,25 @@ public class PausableAnimationController implements Initializable {
 
     /**
      * <p>
-     * Establece un enlace bidireccional entre la propiedad de texto del Label y la propiedad animationDuration del objeto timer.
-     * Primero accede a la propiedad de texto del Label desde {@code textProperty()}. Luego establece un enlace bidireccional con
-     * el metodo {@code bindBidirectional()}. Esto significa que los cambios en cualquiera de las dos propiedades se reflejaran
-     * automaticamente en la otra. El objeto {@code new NumberStringConverter("Animation Duration: ")} es un convertidor que se
-     * encarga de transformar el valor numerico de animationDuration en una cadena de texto para el Label, y viceversa. El prefijo
-     * "Animation Duration: " se añadira al valor numerico cuando se muestre en el Label.
+     * Establece un enlace bidireccional entre la propiedad de texto del Label {@code timerClock} y la propiedad
+     * {@code animationTime} del objeto timer. Primero accede a la propiedad de texto del Label desde {@code textProperty()}.
+     * Luego establece un enlace bidireccional con el metodo {@code bindBidirectional()}. Esto significa que los cambios en
+     * cualquiera de las dos propiedades se reflejaran automaticamente en la otra. El objeto
+     * {@code new NumberStringConverter("Animation time: ")} es un convertidor que se encarga de transformar el valor numerico de
+     * animationTime en una cadena de texto para el Label, y viceversa. El prefijo "Animation time: " se añadira al valor numerico
+     * cuando se muestre en el Label.
      * <p>
-     * Cuando el valor de {@code animationDuration} cambia (por ejemplo, durante la animacion), el texto del Label se actualiza
+     * Cuando el valor de animationTime cambia (por ejemplo, durante la animacion), el texto del Label se actualiza
      * automaticamente para reflejar el nuevo valor. Si por alguna razon el texto del Label se modificara directamente (aunque es
-     * menos comun), el valor de animationDuration se actualizaria en consecuencia.
+     * menos comun), el valor de animationTime se actualizaria en consecuencia.
      * <p>
-     * Las ventajas de este enfoque resultan en una sincronizacion automatica entre el modelo de datos (animationDuration) y la
-     * vista (timerClock). Ademas, elimina la necesidad de actualizar manualmente el Label cada vez que cambia la duracion de la
-     * animacion y proporciona una separacion clara entre la logica de la animacion y la presentacion en la interfaz de usuario.
+     * Las ventajas de este enfoque resultan en una sincronizacion automatica entre el modelo de datos (animationTime) y la vista
+     * (timerClock). Ademas, elimina la necesidad de actualizar manualmente el Label cada vez que cambia el tiempo de la animacion
+     * y proporciona una separacion clara entre la logica de la animacion y la presentacion en la interfaz de usuario.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        timerClock.textProperty().bindBidirectional(timer.animationDurationProperty(), new NumberStringConverter("Animation Duration: "));
+        timerClock.textProperty().bindBidirectional(timer.getAnimationTime(), new NumberStringConverter("Animation time: "));
     }
 
     @FXML
@@ -94,7 +95,7 @@ public class PausableAnimationController implements Initializable {
      * Alterna entre iniciar, pausar y reanudar el temporizador.
      */
     public void playPauseSwitchPressed() {
-        if (!timer.isActived()) timer.start();
+        if (!timer.isActivated()) timer.start();
         else if (timer.isPaused()) timer.play();
         else timer.pause();
         updatePlayPauseButton(!timer.isPaused());

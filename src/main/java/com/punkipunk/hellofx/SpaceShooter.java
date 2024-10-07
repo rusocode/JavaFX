@@ -22,14 +22,11 @@ public class SpaceShooter extends Application {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/GameView.fxml")));
         Scene scene = new Scene(root);
 
-        /* Para configurar nuestra clase KeyPolling, solo necesitamos configurar la escena que queremos rastrear en la clase
-         * principal. Como es estatico, podemos acceder a el facilmente en nuestro GameController, y como toda la logica esta
-         * correctamente encapsulada en la clase KeyPolling, ¡de lo unico que debemos preocuparnos es de preguntar si nuestras
-         * teclas de entrada de usuario estan presionadas actualmente! */
         KeyPolling.getInstance().pollScene(scene);
 
         stage.setScene(scene);
         stage.setTitle("SpaceShooter");
+        stage.setResizable(false);
         stage.getIcons().add(new Image("logo.png"));
         stage.setScene(scene);
         stage.show();

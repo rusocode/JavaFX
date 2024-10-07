@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="gameAnchor" prefHeight="450" prefWidth="750"
-            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.punkipunk.hellofx.controllers.GameController">
+<AnchorPane fx:id="gameAnchor" prefHeight="450" prefWidth="750" stylesheets="@../css/game-style.css"
+            xmlns="http://javafx.com/javafx/22"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punkipunk.hellofx.controllers.GameController">
     <Canvas fx:id="gameCanvas" height="450.0" width="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
             AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+    <Label fx:id="fpsLabel" layoutX="14.0" layoutY="14.0"/>
 </AnchorPane>

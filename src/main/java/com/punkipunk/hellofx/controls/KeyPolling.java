@@ -1,5 +1,6 @@
 package com.punkipunk.hellofx.controls;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,11 +37,11 @@ import javafx.scene.input.KeyCode;
  * manejar. Para añadir un manejador de eventos, se define el EventHandler, se añade al nodo con {@code addEventHandler()}
  * especificando el tipo de evento, y se puede remover despues con {@code removeEventHandler()}. Los filtros de eventos se añaden
  * y remueven de manera similar con {@code addEventFilter()} y {@code removeEventFilter()}. Existen metodos de conveniencia como
- * {@code setOnKeyPressed()} para definir manejadores de eventos mas facilmente, siguiendo el patron setOnTipoDeEvento
- * ({@code setOnEventType()}). Estos se pueden remover asignando null y se ejecutan despues de otros manejadores del mismo tipo en
- * el nodo. Al remover un manejador o filtro, es importante usar el metodo correcto y especificar el mismo tipo de evento que se
- * uso al añadirlo. Este resumen abarca las principales formas de definir y gestionar la respuesta a eventos en JavaFX, ofreciendo
- * flexibilidad en la implementacion y control del comportamiento de la interfaz de usuario.
+ * {@code setOnKeyPressed()} para definir manejadores de eventos mas facilmente, siguiendo el patron setOnTipoDeEvento. Estos se
+ * pueden remover asignando null y se ejecutan despues de otros manejadores del mismo tipo en el nodo. Al remover un manejador o
+ * filtro, es importante usar el metodo correcto y especificar el mismo tipo de evento que se uso al añadirlo. Este resumen abarca
+ * las principales formas de definir y gestionar la respuesta a eventos en JavaFX, ofreciendo flexibilidad en la implementacion y
+ * control del comportamiento de la interfaz de usuario.
  * <h2>Tipos de eventos</h2>
  * <p>
  * Los tipos de eventos en JavaFX se dividen en dos categorias principales:
@@ -121,7 +122,7 @@ import javafx.scene.input.KeyCode;
  * multiples funciones, por lo que anular otros controladores de eventos es una preocupacion menor.
  * <pre>{@code
  * textField.setOnAction(event -> {
- *     // Event action defined with lambda
+ *     // Accion de evento definida con lambda
  * });
  * }</pre>
  * <p>
@@ -152,45 +153,82 @@ import javafx.scene.input.KeyCode;
 
 public class KeyPolling {
 
+    private static KeyPolling instance;
     private static Scene scene;
-    private static final Set<KeyCode> keysCurrentlyDown = new HashSet<>();
+    // Uso de EnumSet para mejor rendimiento
+    private static final Set<KeyCode> keysCurrentlyDown = EnumSet.noneOf(KeyCode.class); // Conjunto de teclas actualmente presionadas
 
-    public static KeyPolling getInstance() {
-        return new KeyPolling();
+    private KeyPolling() {
     }
 
+    /**
+     * Obtiene una nueva instancia de la clase.
+     *
+     * @return una nueva instancia de la clase.
+     */
+    public static KeyPolling getInstance() {
+        if (instance == null) instance = new KeyPolling();
+        return instance;
+    }
+
+    /**
+     * Configura la escena para el polling de teclas.
+     *
+     * @param scene escena a configurar.
+     * @throws IllegalArgumentException si la escena es nula.
+     */
     public void pollScene(Scene scene) {
+        if (scene == null) throw new IllegalArgumentException("The scene cannot be null!");
         clearKeys();
         removeCurrentKeyHandlers();
         setScene(scene);
     }
 
-    private void clearKeys() {
-        keysCurrentlyDown.clear();
-    }
-
-    private void removeCurrentKeyHandlers() {
-        if (scene != null) {
-            KeyPolling.scene.setOnKeyPressed(null);
-            KeyPolling.scene.setOnKeyReleased(null);
-        }
-    }
-
-    private void setScene(Scene scene) {
-        KeyPolling.scene = scene;
-        KeyPolling.scene.setOnKeyPressed((keyEvent -> keysCurrentlyDown.add(keyEvent.getCode())));
-        KeyPolling.scene.setOnKeyReleased((keyEvent -> keysCurrentlyDown.remove(keyEvent.getCode())));
-    }
-
+    /**
+     * Verifica si una tecla especifica esta presionada.
+     *
+     * @param keyCode codigo de la tecla a verificar.
+     * @return true si la tecla esta presionada, false en caso contrario.
+     */
     public boolean isDown(KeyCode keyCode) {
         return keysCurrentlyDown.contains(keyCode);
     }
 
+    /**
+     * Limpia las teclas.
+     */
+    private void clearKeys() {
+        keysCurrentlyDown.clear();
+    }
+
+    /**
+     * Elimina los manejadores de eventos actuales.
+     */
+    private void removeCurrentKeyHandlers() {
+        if (scene != null) {
+            scene.setOnKeyPressed(null);
+            scene.setOnKeyReleased(null);
+        }
+    }
+
+    /**
+     * Configura una nueva escena.
+     *
+     * @param newScene nueva escena.
+     */
+    private void setScene(Scene newScene) {
+        scene = newScene;
+        scene.setOnKeyPressed((keyEvent -> keysCurrentlyDown.add(keyEvent.getCode())));
+        scene.setOnKeyReleased((keyEvent -> keysCurrentlyDown.remove(keyEvent.getCode())));
+    }
+
+    /**
+     * Muestra informacion sobre las teclas presionadas.
+     */
     @Override
     public String toString() {
-        StringBuilder keysDown = new StringBuilder("KeyPolling on scene (").append(scene).append(")");
-        for (KeyCode code : keysCurrentlyDown)
-            keysDown.append(code.getName()).append(" ");
+        StringBuilder keysDown = new StringBuilder("KeyPolling en escena (").append(scene).append("): ");
+        keysCurrentlyDown.forEach(code -> keysDown.append(code.getName()).append(" "));
         return keysDown.toString();
     }
 

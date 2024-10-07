@@ -49,8 +49,8 @@ import com.punkipunk.hellofx.models.Entity;
  * <h3>Representacion de sub-image con Canvas</h3>
  * <p>
  * El metodo drawImage() tambien permite renderizar areas muestreadas de una imagen especificando las coordenadas del rectangulo
- * de origen ademas de las coordenadas de destino habituales. Los parametros dx, dy, dw y dh definen la posicion y tamano del
- * rectangulo en el canvas, mientras que sx, sy, sw y sh especifican la ubicacion y tamano del rectangulo muestreado de la imagen
+ * de origen ademas de las coordenadas de destino habituales. Los parametros dx, dy, dw y dh definen la posicion y tamaño del
+ * rectangulo en el canvas, mientras que sx, sy, sw y sh especifican la ubicacion y tamaño del rectangulo muestreado de la imagen
  * original que se renderizara (en un SpriteSheet). Esta funcionalidad es particularmente util para implementar animaciones
  * basadas en frames, como las animaciones de sprites. Un ejemplo sencillo de esto se puede lograr moviendo el origen del cuadrado
  * de origen en cada frame, aunque se podria mejorar cambiando tambien el rectangulo de destino para simular un movimiento mas
@@ -70,14 +70,14 @@ import com.punkipunk.hellofx.models.Entity;
 
 public class Renderer {
 
-    Canvas canvas;
-    GraphicsContext context;
+    private final Canvas canvas;
+    private final GraphicsContext context;
 
     // Almacena el fondo para renderizar cada fotograma, porque se borra junto con todo lo demas
-    Image background;
+    private Image background;
 
     // Necesita almacenar una lista de entidades para renderizar cada frame
-    List<Entity> entities = new ArrayList<>();
+    private final List<Entity> entities = new ArrayList<>();
 
     public Renderer(Canvas canvas) {
         this.canvas = canvas;
@@ -103,15 +103,13 @@ public class Renderer {
     public void render() {
         context.save();
 
-        if (background != null) {
-            context.drawImage(background, 0, 0);
-        }
+        if (background != null) context.drawImage(background, 0, 0);
 
         for (Entity entity : entities) {
 
             transformContext(entity);
 
-            Point2D pos = entity.getDrawPosition();
+            Point2D pos = entity.getPosition();
             context.drawImage(
                     entity.getImage(),
                     pos.getX(),
@@ -126,28 +124,18 @@ public class Renderer {
 
     /**
      * <p>
-     * Limpiando el ultimo fotograma
+     * Prepara el canvas para el siguiente fotograma limpiando el contenido anterior.
      * <p>
-     * Limpiar el ultimo fotograma es bastante sencillo. En otras secuencias de renderizado, habria que limpiar bits del buffer e
-     * intercambiar los bufferes de fotogramas (¡es complicado!). Por suerte, con JavaFX, simplemente dibujamos un rectangulo
-     * gigante con la misma forma del lienzo.
-     * <p>
-     * El lienzo de canvas es por defecto transparente, pero se puede establecer un fondo de color solido o imagen. Hay dos formas
-     * de agregar un color de fondo: mediante comandos de dibujo manuales o envolviendo el canvas en una Region y configurando el
-     * fondo del contenedor. El metodo manual es util para fondos dinamicos que cambian frecuentemente, como en un juego. Usar una
-     * Region es mejor para objetos estaticos como graficos, ya que permite estilizar el fondo una sola vez. Aunque establecer un
-     * color de fondo no es la funcion principal del canvas, es posible hacerlo de estas dos maneras segun las necesidades
-     * especificas del proyecto.
-     * <p>
-     * La forma mas simple de establecer un color de fondo en un canvas es dibujar un rectangulo del mismo tamaño que el canvas
-     * con el color deseado. Se utiliza el comando {@code setFill()} para definir el color de relleno y {@code fillRect()} para
-     * dibujar un rectangulo opaco del tamaño especificado. Al dibujar un rectangulo que comienza en las coordenadas (0, 0) y se
-     * extiende por todo el ancho y alto del canvas, se sobrescribe cualquier contenido existente. En este caso, se establece el
-     * relleno en gris (el predeterminado es negro) y se dibuja un rectangulo que cubre completamente el canvas. Al vincular el
-     * tamaño del rectangulo directamente con las dimensiones del canvas, se asegura que este quede completamente cubierto por el
-     * color de fondo.
-     * <p>
-     * Ahora que el canvas esta limpio, podemos dibujar el fondo del siguiente frame y las posiciones de los jugadores.
+     * El metodo prepare() se encarga de limpiar el ultimo fotograma del canvas en JavaFX. A diferencia de otros sistemas de
+     * renderizado que requieren manipulacion compleja de buffers, JavaFX simplifica este proceso dibujando un rectangulo que
+     * cubre todo el canvas. Aunque el fondo del canvas es transparente por defecto, se puede establecer un color solido o una
+     * imagen de fondo. Existen dos enfoques para agregar un color de fondo: mediante comandos de dibujo manuales o envolviendo el
+     * canvas en una {@code Region} y configurando el fondo del contenedor. El metodo manual es preferible para fondos dinamicos,
+     * mientras que usar una Region es mejor para elementos estaticos. La forma mas sencilla de establecer un color de fondo es
+     * dibujar un rectangulo del mismo tamaño que el canvas con el color deseado, utilizando {@code setFill()} para definir el
+     * color y {@code fillRect()} para dibujar el rectangulo. En este caso, se establece un color gris de fondo y se dibuja un
+     * rectangulo que cubre completamente el canvas, vinculando su tamaño a las dimensiones del canvas. Este proceso prepara el
+     * canvas para dibujar el fondo del siguiente frame y las posiciones de los jugadores.
      */
     public void prepare() {
         context.setFill(new Color(0.68, 0.68, 0.68, 1.0));
