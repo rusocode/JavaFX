@@ -32,6 +32,4 @@ public class SpaceShooter extends Application {
 
     }
 
-    // Cambio
-
 }
