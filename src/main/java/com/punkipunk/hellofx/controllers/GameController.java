@@ -31,10 +31,10 @@ public class GameController implements Initializable {
     @FXML
     public Label fpsLabel;
 
-    /* Para configurar nuestra clase KeyPolling, solo necesitamos configurar la escena que queremos rastrear en la clase
-     * principal. Como es estatica, podemos acceder a el facilmente en nuestro GameController, y como toda la logica esta
-     * correctamente encapsulada en la clase KeyPolling, ¡de lo unico que debemos preocuparnos es de preguntar si nuestras teclas
-     * de entrada de usuario estan presionadas actualmente! */
+    /* Para configurar la clase KeyPolling, solo necesitamos configurar la escena que queremos rastrear en la clase principal.
+     * Como es estatica, podemos acceder a el facilmente en nuestro GameController, y como toda la logica esta correctamente
+     * encapsulada en la clase KeyPolling, ¡de lo unico que debemos preocuparnos es de preguntar si nuestras teclas de entrada de
+     * usuario estan presionadas actualmente! */
     private KeyPolling keys;
 
     /* El renderizador imprime todas las entidades en el canvas en cada fotograma. Aunque en este juego solo hay una entidad, es
@@ -101,10 +101,12 @@ public class GameController implements Initializable {
      * @param deltaTime tiempo transcurrido desde el ultimo frame en segundos.
      */
     private void updatePlayerMovement(float deltaTime) {
-        if (keys.isDown(KeyCode.W)) player.applyThrust(THRUST * deltaTime);
-        else if (keys.isDown(KeyCode.S)) player.applyThrust(-THRUST * deltaTime);
-        if (keys.isDown(KeyCode.D)) player.applyRotation(ROTATION * deltaTime);
-        else if (keys.isDown(KeyCode.A)) player.applyRotation(-ROTATION * deltaTime);
+        /* Multiplica el empuje por el deltaTime para "adaptarse" al tiempo independienteme del hardware en donde se ejecute el
+         * juego. Es decir, que si el juego tarda mas en actualizarce (tick), entonces el empuje se adapta al cambio en el tiempo. */
+        if (keys.isPressed(KeyCode.W)) player.applyThrust(THRUST * deltaTime);
+        else if (keys.isPressed(KeyCode.S)) player.applyThrust(-THRUST * deltaTime);
+        if (keys.isPressed(KeyCode.D)) player.applyRotation(ROTATION * deltaTime);
+        else if (keys.isPressed(KeyCode.A)) player.applyRotation(-ROTATION * deltaTime);
         player.update();
     }
 

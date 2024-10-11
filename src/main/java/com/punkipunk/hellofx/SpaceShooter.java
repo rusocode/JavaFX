@@ -24,7 +24,6 @@ public class SpaceShooter extends Application {
 
         KeyPolling.getInstance().pollScene(scene);
 
-        stage.setScene(scene);
         stage.setTitle("SpaceShooter");
         stage.setResizable(false);
         stage.getIcons().add(new Image("logo.png"));

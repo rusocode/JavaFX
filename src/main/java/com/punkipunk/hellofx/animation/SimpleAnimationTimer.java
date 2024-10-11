@@ -6,6 +6,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * <p>
+ * AnimationTimer() no corre a un numero fijo de FPS. En su lugar, se sincroniza con la frecuencia de actualizacion del monitor,
+ * lo que se conoce como "vsync" (sincronizacion vertical).
+ * <p>
  * AnimationTimer en JavaFX ejecuta su metodo {@code handle()} una vez por cada frame de la animacion, lo que se conoce como un
  * "pulso". La velocidad maxima esta limitada por la tasa de refresco de la pantalla, por lo que nunca se ejecutara mas rapido que
  * esta. JavaFX determina la tasa de frames verificando primero la propiedad basada en la tasa de refresco de la pantalla, luego

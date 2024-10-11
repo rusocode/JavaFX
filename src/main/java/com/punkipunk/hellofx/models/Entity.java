@@ -24,16 +24,15 @@ import javafx.scene.image.Image;
  * La conversion de grados a radianes es necesaria porque las funciones trigonometricas en Java (como {@code Math.sin()} y
  * {@code Math.cos()}) esperan sus argumentos en radianes, no en grados.
  * <p>
- * La negacion de la rotacion (-rotation) se realiza para ajustar la direccion del vector al sistema de coordenadas utilizado (de
- * la pantalla). En muchos sistemas graficos 2D, incluyendo probablemente el usado aqui, el eje Y crece hacia abajo en la pantalla
- * y la rotacion positiva se considera en sentido horario. Sin embargo, en el circulo trigonometrico estandar, el eje Y crece
- * hacia arriba y la rotacion positiva se considera en sentido antihorario. Al negar la rotacion, estamos "invirtiendo" el sentido
- * de la rotacion para que coincida con el circulo trigonometrico estandar usado por las funciones sin y cos. Esto asegura que
- * cuando calculamos el vector de velocidad en {@code polarToCartesian()}, la direccion resultante sea coherente con la rotacion
- * visual de la entidad en la pantalla. Por ejemplo, si rotation es 90 grados (apuntando a la derecha en la pantalla), -rotation
- * sera -90 grados. Cuando esto se pasa a polarToCartesian(), resultara en un vector que apunta a la derecha (cos(-90°) = 0,
- * sin(-90°) = -1). Esta negacion es una tecnica comun para reconciliar las diferencias entre los sistemas de coordenadas de la
- * pantalla y el sistema de coordenadas matematico estandar usado en trigonometria.
+ * En muchos sistemas graficos 2D, incluyendo probablemente el usado aqui, el eje Y crece hacia abajo en la pantalla y la rotacion
+ * positiva se considera en sentido horario. Sin embargo, en el circulo trigonometrico estandar, el eje Y crece hacia arriba y la
+ * rotacion positiva se considera en sentido antihorario. Al negar la rotacion, estamos "invirtiendo" el sentido de la rotacion
+ * para que coincida con el circulo trigonometrico estandar usado por las funciones sin y cos. Esto asegura que cuando calculamos
+ * el nuevo vector en {@code polarToCartesian()}, la direccion resultante sea coherente con la rotacion visual de la entidad en la
+ * pantalla. Por ejemplo, si rotation es 90 grados (apuntando a la derecha en la pantalla), -rotation sera -90 grados. Cuando esto
+ * se pasa a polarToCartesian(), resultara en un vector que apunta a la derecha (cos(-90°) = 0, sin(-90°) = -1). Esta negacion es
+ * una tecnica comun para reconciliar las diferencias entre los sistemas de coordenadas de la pantalla y el sistema de coordenadas
+ * matematico estandar usado en trigonometria.
  * <p>
  * Nota: Los escalares son magnitudes que solo tienen magnitud, mientras que los vectores tienen magnitud y direccion.
  * <p>
@@ -118,17 +117,17 @@ public class Entity {
     /**
      * <p>
      * Actualiza la posicion de la entidad mediante una operacion de suma vectorial. Desde el punto de vista fisico, este metodo
-     * opera con dos vectores fundamentales. El primero es el vector de posicion (position) que define la ubicacion actual en el
-     * espacio 2D, con componentes (x, y) medidas en pixeles desde el origen ubicado en la esquina superior izquierda de la
-     * pantalla. El segundo es el vector de desplazamiento (newPosition) que define el cambio de posicion con componentes (Δx, Δy)
-     * en pixeles. Este vector de desplazamiento se genera en el metodo {@code applyThrust()} a partir de dos escalares: la
-     * magnitud, que se calcula como el producto del empuje (thrust) por el tiempo transcurrido (deltaTime), y la direccion,
-     * determinada por el angulo de rotacion (rotation). La operacion vectorial realizada es una suma donde el vector de posicion
-     * final es igual al vector de posicion inicial mas el vector de desplazamiento. En terminos de componentes, esto significa
-     * que la posicion final en x es igual a la posicion inicial en x mas el desplazamiento en x, y de manera similar para la
-     * componente y. Este proceso representa un caso clasico de suma vectorial donde la posicion es un vector que indica la
-     * ubicacion en el espacio, el desplazamiento es un vector que indica el cambio en esa ubicacion, y la suma vectorial produce
-     * la nueva ubicacion en el espacio.
+     * opera con dos vectores fundamentales. El primero es el vector de posicion ({@code position}) que define la ubicacion actual
+     * en el espacio 2D, con componentes (x, y) medidas en pixeles desde el origen ubicado en la esquina superior izquierda de la
+     * pantalla. El segundo es el vector de desplazamiento ({@code newPosition}) que define el cambio de posicion con componentes
+     * (Δx, Δy) en pixeles. Este vector de desplazamiento se genera en el metodo {@code applyThrust()} a partir de dos escalares:
+     * la magnitud, que se calcula como el producto del empuje ({@code thrust}) por el tiempo transcurrido ({@code deltaTime}), y
+     * la direccion, determinada por el angulo de rotacion ({@code rotation}). La operacion vectorial realizada es una suma donde
+     * el vector de posicion final es igual al vector de posicion inicial mas el vector de desplazamiento. En terminos de
+     * componentes, esto significa que la posicion final en x es igual a la posicion inicial en x mas el desplazamiento en x, y de
+     * manera similar para la componente y. Este proceso representa un caso clasico de suma vectorial donde la posicion es un
+     * vector que indica la ubicacion en el espacio, el desplazamiento es un vector que indica el cambio en esa ubicacion, y la
+     * suma vectorial produce la nueva ubicacion en el espacio.
      */
     private void updatePosition() {
         position = position.add(newPosition);
@@ -238,9 +237,9 @@ public class Entity {
     }
 
     /**
-     * Obtiene el centro de la entidad en el eje de coordenadas.
+     * Obtiene el centro de la entidad.
      *
-     * @return el centro de la entidad en el eje de coordenadas.
+     * @return el centro de la entidad.
      */
     public Point2D getCenter() {
         return new Point2D(position.getX() + width / 2, position.getY() + height / 2);

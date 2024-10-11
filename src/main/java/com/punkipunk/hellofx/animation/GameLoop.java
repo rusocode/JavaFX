@@ -53,8 +53,8 @@ public class GameLoop extends AnimationTimer {
      * hace que el codigo sea mas modular y facil de mantener.
      */
     public interface GameLoopCallback {
+
         /**
-         * <p>
          * Actualiza el estado del juego para el frame actual.
          * <p>
          * Este metodo es llamado en cada frame de la animacion cuando el juego esta activo y no pausado.
@@ -63,6 +63,7 @@ public class GameLoop extends AnimationTimer {
          *                  usado para calcular actualizaciones independientes de la tasa de frames.
          */
         void tick(float deltaTime);
+
     }
 
     /**
@@ -141,13 +142,16 @@ public class GameLoop extends AnimationTimer {
             // Calculo la cantidad de FPS por segundo
             frameCount++;
             accumulatedTime += deltaTime;
-            if (accumulatedTime >= 1) {  // Actualiza los FPS en cada segundo
-                /* Al dividir el numero de frames por el tiempo transcurrido, obtenemos la cantidad de frames que se procesaron en
-                 * promedio por cada segundo. Supongamos que en un segundo exacto se cuentan 60 frames y el tiempo transcurrido es
-                 * de 1 segundo, entonces 60 / 1 = 60 fps. Ahora, si el sistema esta un poco sobrecargado y toma 1.1 segundos
-                 * procesar 60 frames, entonces 60 / 1.1 = 54.5 fps. Si solo contaramos frames y resetearamos cada segundo exacto,
-                 * podriamos perder precision. Este metodo tiene en cuenta pequeñas variaciones en el tiempo y da un resultado mas
-                 * preciso. */
+            // Actualiza los FPS en cada segundo
+            if (accumulatedTime >= 1) {
+                /* En esta formula frameCount representa cuantos frames se han procesado y accumulatedTime representa cuanto
+                 * tiempo ha pasado en segundos. Al dividirlos, obtenemos frames/segundo, que es la definicion de FPS. Esta
+                 * division es necesaria porque el tiempo acumulado podria no ser exactamente 1 segundo cuando se hace la
+                 * medicion. Por ejemplo, si el tiempo acumulado es ligeramente mayor a 1 segundo (como 1.1 segundos), necesitamos
+                 * ajustar el conteo de frames a una base de 1 segundo. Si solo reportaramos frameCount, estariamos asumiendo que
+                 * accumulatedTime es exactamente 1 segundo, lo que podria llevar a mediciones imprecisas de FPS cuando el tiempo
+                 * entre actualizaciones no es exactamente 1 segundo. Por lo tanto, la division es necesaria para obtener una
+                 * medicion precisa de los FPS, independientemente de las pequeñas variaciones en el tiempo de actualizacion. */
                 double fps = frameCount / accumulatedTime;
                 fpsProperty.set(String.valueOf((int) fps));
                 frameCount = 0;

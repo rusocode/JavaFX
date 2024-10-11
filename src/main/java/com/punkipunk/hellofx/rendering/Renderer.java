@@ -53,8 +53,7 @@ import com.punkipunk.hellofx.models.Entity;
  * rectangulo en el canvas, mientras que sx, sy, sw y sh especifican la ubicacion y tamaño del rectangulo muestreado de la imagen
  * original que se renderizara (en un SpriteSheet). Esta funcionalidad es particularmente util para implementar animaciones
  * basadas en frames, como las animaciones de sprites. Un ejemplo sencillo de esto se puede lograr moviendo el origen del cuadrado
- * de origen en cada frame, aunque se podria mejorar cambiando tambien el rectangulo de destino para simular un movimiento mas
- * realista.
+ * de origen en cada frame, aunque se podria mejorar cambiando el rectangulo de destino para simular un movimiento mas realista.
  * <h2>Conclusion</h2>
  * <p>
  * El objeto canvas y su contexto grafico son herramientas de dibujo extremadamente flexibles y poderosas. Permiten renderizar
@@ -100,8 +99,26 @@ public class Renderer {
         this.background = background;
     }
 
+    /**
+     * El metodo {@code save()} guarda el estado actual del contexto grafico en una pila, incluyendo:
+     * <ul>
+     *   <li>La matriz de transformacion actual</li>
+     *   <li>El area de recorte (clipping)</li>
+     *   <li>Los atributos de dibujado (color, grosor de linea, etc.)</li>
+     * </ul>
+     * Es especialmente util cuando se realizan transformaciones temporales que solo deben afectar a ciertos elementos.
+     * <p>
+     * El metodo {@code restore()} recupera el ultimo estado guardado del contexto grafico. Es crucial llamarlo despues de save()
+     * para:
+     * <ul>
+     *   <li>Evitar que las transformaciones de una entidad afecten a las siguientes</li>
+     *   <li>Prevenir la acumulacion de transformaciones no deseadas</li>
+     *   <li>Mantener un estado limpio del contexto para el siguiente frame</li>
+     * </ul>
+     * Sin restore(), las transformaciones se acumularian y causarian comportamientos inesperados en el renderizado.
+     */
     public void render() {
-        context.save();
+        context.save(); // Guarda el estado "limpio"
 
         if (background != null) context.drawImage(background, 0, 0);
 
@@ -110,16 +127,12 @@ public class Renderer {
             transformContext(entity);
 
             Point2D pos = entity.getPosition();
-            context.drawImage(
-                    entity.getImage(),
-                    pos.getX(),
-                    pos.getY(),
-                    entity.getWidth(),
-                    entity.getHeight()
-            );
+
+            context.drawImage(entity.getImage(), pos.getX(), pos.getY(), entity.getWidth(), entity.getHeight());
+
         }
 
-        context.restore();
+        context.restore(); // Al final asegura que el proximo frame comience con un estado limpio del contexto
     }
 
     /**
@@ -138,10 +151,26 @@ public class Renderer {
      * canvas para dibujar el fondo del siguiente frame y las posiciones de los jugadores.
      */
     public void prepare() {
-        context.setFill(new Color(0.68, 0.68, 0.68, 1.0));
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
+    /**
+     * Aplica una transformacion de rotacion al contexto grafico para una entidad especifica.
+     * <p>
+     * Este metodo configura la matriz de transformacion del contexto grafico para que la entidad se renderice con la rotacion
+     * correcta. El proceso implica:
+     * <ul>
+     *   <li>Obtener el centro de la entidad como punto de pivote para la rotacion</li>
+     *   <li>Crear una transformacion de rotacion usando el angulo actual de la entidad</li>
+     *   <li>Aplicar la matriz de transformacion al contexto grafico</li>
+     * </ul>
+     * La rotacion se realiza alrededor del centro de la entidad, lo que permite un movimiento natural y realista cuando la
+     * entidad gira. Esta transformacion afecta a todas las operaciones de dibujado ({@code drawImage()}) posteriores hasta que el
+     * contexto sea restaurado.
+     *
+     * @param entity la entidad cuya transformacion de rotacion se va a aplicar al contexto grafico. La entidad debe proporcionar
+     *               su centro y angulo de rotacion actual.
+     */
     private void transformContext(Entity entity) {
         Point2D center = entity.getCenter();
         Rotate r = new Rotate(entity.getRotation(), center.getX(), center.getY());
