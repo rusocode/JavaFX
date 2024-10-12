@@ -36,7 +36,6 @@ public abstract class SimpleAnimationTimer extends AnimationTimer {
     }
 
     /**
-     * <p>
      * Se llama en cada frame de la animacion.
      */
     @Override

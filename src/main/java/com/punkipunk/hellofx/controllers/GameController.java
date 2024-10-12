@@ -85,28 +85,22 @@ public class GameController implements Initializable {
         gameLoop.start();
     }
 
-    /**
-     * Logica especifica del juego.
-     */
-    private void tick(float deltaTime) {
+    private void tick(float fixedDeltaTime) {
         renderer.prepare();
-        updatePlayerMovement(deltaTime);
-        // Una vez actualizada la posicion del player, dibuja el fondo y el player
+        updatePlayerMovement(fixedDeltaTime);
         renderer.render();
     }
 
     /**
      * Actualiza el movimiento del player.
      *
-     * @param deltaTime tiempo transcurrido desde el ultimo frame en segundos.
+     * @param fixedDeltaTime tiempo fijo entre actualizaciones de fisica.
      */
-    private void updatePlayerMovement(float deltaTime) {
-        /* Multiplica el empuje por el deltaTime para "adaptarse" al tiempo independienteme del hardware en donde se ejecute el
-         * juego. Es decir, que si el juego tarda mas en actualizarce (tick), entonces el empuje se adapta al cambio en el tiempo. */
-        if (keys.isPressed(KeyCode.W)) player.applyThrust(THRUST * deltaTime);
-        else if (keys.isPressed(KeyCode.S)) player.applyThrust(-THRUST * deltaTime);
-        if (keys.isPressed(KeyCode.D)) player.applyRotation(ROTATION * deltaTime);
-        else if (keys.isPressed(KeyCode.A)) player.applyRotation(-ROTATION * deltaTime);
+    private void updatePlayerMovement(float fixedDeltaTime) {
+        if (keys.isPressed(KeyCode.W)) player.applyThrust(THRUST * fixedDeltaTime);
+        else if (keys.isPressed(KeyCode.S)) player.applyThrust(-THRUST * fixedDeltaTime);
+        if (keys.isPressed(KeyCode.D)) player.applyRotation(ROTATION * fixedDeltaTime);
+        else if (keys.isPressed(KeyCode.A)) player.applyRotation(-ROTATION * fixedDeltaTime);
         player.update();
     }
 

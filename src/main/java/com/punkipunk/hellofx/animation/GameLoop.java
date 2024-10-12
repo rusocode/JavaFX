@@ -6,11 +6,15 @@ import javafx.beans.property.StringProperty;
 
 public class GameLoop extends AnimationTimer {
 
+    private static final double FIXED_TIME_STEP = 1.0f / 60.0f; // 60 actualizaciones por segundo
+
     private long pauseStart, animationStart, lastFrameTime;
     private boolean paused, activated;
     private final StringProperty fpsProperty = new SimpleStringProperty();
-    private int frameCount;
-    private double accumulatedTime; // Tiempo total transcurrido desde la ultima actualizacion de FPS, en segundos
+
+    private long frameCount;
+    private long lastFPSTime = System.nanoTime();
+
 
     private final GameLoopCallback callback;
 
@@ -57,18 +61,12 @@ public class GameLoop extends AnimationTimer {
         /**
          * Actualiza el estado del juego para el frame actual.
          * <p>
-         * Este metodo es llamado en cada frame de la animacion cuando el juego esta activo y no pausado.
-         *
-         * @param deltaTime tiempo transcurrido desde el ultimo frame en segundos. Este valor puede variar entre frames y debe ser
-         *                  usado para calcular actualizaciones independientes de la tasa de frames.
+         * Este metodo es llamado en cada frame de la animacion.
          */
-        void tick(float deltaTime);
+        void tick(float fixedDeltaTime);
 
     }
 
-    /**
-     * Constructor que acepta el callback.
-     */
     public GameLoop(GameLoopCallback callback) {
         this.callback = callback;
     }
@@ -132,34 +130,24 @@ public class GameLoop extends AnimationTimer {
         paused = false;
     }
 
+    /**
+     * La sincronizacion con la tasa de refresco de la pantalla esta siendo manejada implicitamente por AnimationTimer.
+     */
     @Override
     public void handle(long now) {
-        if (activated && !paused) {
-            // Calcula el tiempo transcurrido entre frames en segundos
-            float deltaTime = (float) ((now - lastFrameTime) / 1e9);
-            lastFrameTime = now;
 
-            // Calculo la cantidad de FPS por segundo
-            frameCount++;
-            accumulatedTime += deltaTime;
-            // Actualiza los FPS en cada segundo
-            if (accumulatedTime >= 1) {
-                /* En esta formula frameCount representa cuantos frames se han procesado y accumulatedTime representa cuanto
-                 * tiempo ha pasado en segundos. Al dividirlos, obtenemos frames/segundo, que es la definicion de FPS. Esta
-                 * division es necesaria porque el tiempo acumulado podria no ser exactamente 1 segundo cuando se hace la
-                 * medicion. Por ejemplo, si el tiempo acumulado es ligeramente mayor a 1 segundo (como 1.1 segundos), necesitamos
-                 * ajustar el conteo de frames a una base de 1 segundo. Si solo reportaramos frameCount, estariamos asumiendo que
-                 * accumulatedTime es exactamente 1 segundo, lo que podria llevar a mediciones imprecisas de FPS cuando el tiempo
-                 * entre actualizaciones no es exactamente 1 segundo. Por lo tanto, la division es necesaria para obtener una
-                 * medicion precisa de los FPS, independientemente de las pequeñas variaciones en el tiempo de actualizacion. */
-                double fps = frameCount / accumulatedTime;
-                fpsProperty.set(String.valueOf((int) fps));
-                frameCount = 0;
-                accumulatedTime = 0;
-            }
+        if (!activated || paused) return;
 
-            callback.tick(deltaTime);
+        callback.tick((float) FIXED_TIME_STEP);
+
+        // Monitorea la cantidad de frames por segundo
+        frameCount++;
+        if (now - lastFPSTime >= 1_000_000_000) { // 1 segundo
+            fpsProperty.set(String.valueOf((int) frameCount));
+            frameCount = 0;
+            lastFPSTime = now;
         }
+
     }
 
     /**

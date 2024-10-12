@@ -120,6 +120,7 @@ public class Renderer {
     public void render() {
         context.save(); // Guarda el estado "limpio"
 
+        // Este fondo cubre todo el canvas, efectivamente "limpiando" el frame anterior
         if (background != null) context.drawImage(background, 0, 0);
 
         for (Entity entity : entities) {
@@ -151,7 +152,7 @@ public class Renderer {
      * canvas para dibujar el fondo del siguiente frame y las posiciones de los jugadores.
      */
     public void prepare() {
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
 
     /**
